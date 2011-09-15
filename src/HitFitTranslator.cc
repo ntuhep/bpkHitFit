@@ -181,7 +181,7 @@ namespace hitfit {
 
 
   Lepjets_Event_Jet
-  JetTranslator::operator()(const PFJetInfoBranches& jets,
+  JetTranslator::operator()(const JetInfoBranches& jets,
 			    const int index,
 			    int type /*= hitfit::unknown_label */,
 			    bool useObjEmbRes /* = false */)
@@ -227,7 +227,7 @@ namespace hitfit {
 
 
   bool
-  JetTranslator::CheckEta(const PFJetInfoBranches& jets, const int index) const
+  JetTranslator::CheckEta(const JetInfoBranches& jets, const int index) const
   {
     double jet_eta = jets.Eta[index];
     return bResolution_.CheckEta(jet_eta) && udscResolution_.CheckEta(jet_eta);

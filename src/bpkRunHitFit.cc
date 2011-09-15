@@ -117,7 +117,7 @@ namespace hitfit{
     return _Top_Fit;
   }
 
-  std::vector<Fit_Result>::size_type bpkRunHitFit::FitAllPermutation(const PFJetInfoBranches& jet)
+  std::vector<Fit_Result>::size_type bpkRunHitFit::FitAllPermutation(const JetInfoBranches& jet)
   {
     if (_jets.size() < MIN_HITFIT_JET) {
       // For ttbar lepton+jets, a minimum of MIN_HITFIT_JETS jets

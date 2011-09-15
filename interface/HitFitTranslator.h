@@ -7,7 +7,7 @@
 #include "TopQuarkAnalysis/TopHitFit/interface/fourvec.h"
 
 class LepInfoBranches;
-class PFJetInfoBranches;
+class JetInfoBranches;
 class EvtInfoBranches;
 
 namespace hitfit {
@@ -53,7 +53,7 @@ namespace hitfit {
 		  double jesB);
     ~JetTranslator();
 
-    Lepjets_Event_Jet operator()(const PFJetInfoBranches& jets,
+    Lepjets_Event_Jet operator()(const JetInfoBranches& jets,
 				 const int index,
 				 int type = hitfit::unknown_label,
 				 bool useObjEmbRes = false);
@@ -62,7 +62,7 @@ namespace hitfit {
     const EtaDepResolution& udscResolution() const;
     const EtaDepResolution& bResolution() const;
 
-    bool CheckEta(const PFJetInfoBranches& jets, const int index) const;
+    bool CheckEta(const JetInfoBranches& jets, const int index) const;
 
 
   private:

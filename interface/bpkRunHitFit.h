@@ -64,7 +64,7 @@ namespace hitfit{
 
     const Top_Fit& GetTopFit() const;
 
-    std::vector<Fit_Result>::size_type FitAllPermutation(const PFJetInfoBranches& jet);
+    std::vector<Fit_Result>::size_type FitAllPermutation(const JetInfoBranches& jet);
 
     std::vector<Lepjets_Event> GetUnfittedEvent();
 

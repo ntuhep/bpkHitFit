@@ -38,6 +38,8 @@ namespace hitfit{
 
     std::vector<Fit_Result>             _Fit_Results;
 
+    int                  _nu_solution;
+
   public:
 
     bpkRunHitFit(const LeptonTranslator& lep,
@@ -46,7 +48,8 @@ namespace hitfit{
 		 const std::string       default_file,
 		 double                  lepw_mass,
 		 double                  hadw_mass,
-		 double                  top_mass);
+		 double                  top_mass,
+		 int                     nu_sol=-1);
 
     ~bpkRunHitFit();
 

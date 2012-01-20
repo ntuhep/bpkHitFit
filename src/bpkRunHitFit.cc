@@ -45,14 +45,17 @@ namespace hitfit{
 			     const std::string       default_file,
 			     double                  lepw_mass,
 			     double                  hadw_mass,
-			     double                  top_mass):
+			     double                  top_mass,
+			     int                     nu_sol):
     _LeptonTranslator(lep),
     _JetTranslator(jet),
     _METTranslator(met),
     _event(0,0),
     _jetObjRes(false),
-    _Top_Fit(Top_Fit_Args(Defaults_Text(default_file)),lepw_mass,hadw_mass,top_mass)
+    _Top_Fit(Top_Fit_Args(Defaults_Text(default_file)),lepw_mass,hadw_mass,top_mass),
+    _nu_solution(nu_sol)
   {
+    if(_nu_solution<0 || _nu_solution>1) _nu_solution=2;
   }
 
   bpkRunHitFit::~bpkRunHitFit()
@@ -148,10 +151,13 @@ namespace hitfit{
 
     std::stable_sort(jet_types.begin(),jet_types.end());
 
+    const int nustart = (_nu_solution==1) ? _nu_solution : 0;//
+
     do {
 
       // begin loop over all jet permutation
-      for (int nusol = 0 ; nusol != 2 ; nusol++) {
+      for (int nusol = nustart ; nusol != 2 ; nusol++) {
+	if(nusol > _nu_solution) break;
 	// loop over two neutrino solution
 	bool nuz = bool(nusol);
 

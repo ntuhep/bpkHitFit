@@ -109,6 +109,7 @@ namespace hitfit {
     resolution_filename = CMSSW_BASE +
       std::string("/src/TopQuarkAnalysis/TopHitFit/data/resolution/tqafBJetResolution.txt");
     bResolution_    = EtaDepResolution(resolution_filename);
+    jetCorrectionLevel_ = "L7Parton";
     jes_  = 1.0;
     jesB_ = 1.0;
 
@@ -139,6 +140,7 @@ namespace hitfit {
 
     udscResolution_ = EtaDepResolution(udscResolution_filename);
     bResolution_    = EtaDepResolution(bResolution_filename);
+    jetCorrectionLevel_ = "L7Parton";
     jes_  = 1.0;
     jesB_ = 1.0;
 
@@ -146,6 +148,7 @@ namespace hitfit {
 
   JetTranslator::JetTranslator(const std::string& udscFile,
 			       const std::string& bFile,
+                               const std::string& jetCorrectionLevel,
 			       double jes,
 			       double jesB)
   {
@@ -170,6 +173,7 @@ namespace hitfit {
 
     udscResolution_ = EtaDepResolution(udscResolution_filename);
     bResolution_    = EtaDepResolution(bResolution_filename);
+    jetCorrectionLevel_ = jetCorrectionLevel;
     jes_  = jes;
     jesB_ = jesB;
 
@@ -195,12 +199,26 @@ namespace hitfit {
 
     if (type == hitfit::hadb_label || type == hitfit::lepb_label || type == hitfit::higgs_label) {
       jet_resolution = bResolution_.GetResolution(jet_eta);
-      float scale = jets.Pt[index]>0. ? jesB_*jets.PtCorrL7b[index] / jets.Pt[index] : 0.;
+
+      //float scale = jets.Pt[index]>0. ? jesB_*jets.PtCorrL7b[index] / jets.Pt[index] : 0.;
+      float scale = jesB_;
+      if(jets.Pt[index]>0.) {
+	if(jetCorrectionLevel_.find("L7")!=std::string::npos) scale*=jets.PtCorrL7b[index] / jets.Pt[index];
+	else if(jetCorrectionLevel_.find("L3")!=std::string::npos) scale*=jets.PtCorrL3[index] / jets.Pt[index];
+      }
+
       p = Fourvec(jets.Px[index]*scale,jets.Py[index]*scale,jets.Pz[index]*scale,jets.Energy[index]*scale);
 
     } else {
       jet_resolution = udscResolution_.GetResolution(jet_eta);
-      float scale = jets.Pt[index]>0. ? jes_*jets.PtCorrL7uds[index] / jets.Pt[index] : 0.;
+
+      //float scale = jets.Pt[index]>0. ? jes_*jets.PtCorrL7uds[index] / jets.Pt[index] : 0.;
+      float scale = jes_;
+      if(jets.Pt[index]>0.) {
+	if(jetCorrectionLevel_.find("L7")!=std::string::npos) scale*=jets.PtCorrL7uds[index] / jets.Pt[index];
+	else if(jetCorrectionLevel_.find("L3")!=std::string::npos) scale*=jets.PtCorrL3[index] / jets.Pt[index];
+      }
+
       p = Fourvec(jets.Px[index]*scale,jets.Py[index]*scale,jets.Pz[index]*scale,jets.Energy[index]*scale);
     }
 

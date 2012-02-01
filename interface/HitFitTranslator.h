@@ -49,6 +49,7 @@ namespace hitfit {
 		  const std::string& bFile);
     JetTranslator(const std::string& udscFile,
 		  const std::string& bFile,
+		  const std::string& jetCorrectionLevel,
 		  double jes,
 		  double jesB);
     ~JetTranslator();
@@ -70,6 +71,7 @@ namespace hitfit {
     EtaDepResolution udscResolution_;
     EtaDepResolution bResolution_;
 
+    std::string jetCorrectionLevel_;
     double jes_;
     double jesB_;
 

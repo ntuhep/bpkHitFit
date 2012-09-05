@@ -276,7 +276,7 @@ namespace hitfit {
   METTranslator::operator()(const EvtInfoBranches& evt,
 			    bool useObjEmbRes /* = false */)
   {
-    return Fourvec (evt.PFMETx,evt.PFMETy,0.0,evt.MET);
+    return Fourvec (evt.PFMETx,evt.PFMETy,0.0,evt.PFMET);
   } // Fourvec METTranslator::operator()(const EvtInfoBranches& evt)
 
 

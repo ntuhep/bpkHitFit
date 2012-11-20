@@ -1,17 +1,15 @@
 #ifndef BPKRUNHITFIT
 #define BPKRUNHITFIT
 
-/* #include <algorithm> */
+#include "MyAna/bpkHitFit/interface/HitFitTranslator.h"
+#include "MyAna/bpkHitFit/interface/Lepjets_Event.h"
+#include "MyAna/bpkHitFit/interface/Top_Fit.h"
 
-/* #include "TopQuarkAnalysis/HitFit/interface/Defaults_Text.hpp" */
 #include "TopQuarkAnalysis/TopHitFit/interface/Fit_Result.h"
-#include "TopQuarkAnalysis/TopHitFit/interface/Lepjets_Event.h"
-#include "TopQuarkAnalysis/TopHitFit/interface/Top_Fit.h"
-
-#include "TopQuarkAnalysis/bpkHitFit/interface/HitFitTranslator.h"
 
 static const unsigned int MIN_HITFIT_JET =   4 ;
 static const unsigned int MIN_HITFIT_TTH =   6 ;
+static const unsigned int MIN_HITFIT_TSTAR = 6 ;
 static const unsigned int MAX_HITFIT_JET =   8 ;
 static const unsigned int MAX_HITFIT     = 1680;
 static const unsigned int MAX_HITFIT_VAR =  32 ;
@@ -32,6 +30,7 @@ namespace hitfit{
 
     bool                                _jetObjRes;
 
+        //TopGluon_Fit                             _TopGluon_Fit;
     Top_Fit                             _Top_Fit;
 
     std::vector<Lepjets_Event>          _Unfitted_Events;
@@ -39,6 +38,8 @@ namespace hitfit{
     std::vector<Fit_Result>             _Fit_Results;
 
     int                  _nu_solution;
+
+        bool _requireMatchedBtag;
 
   public:
 
@@ -49,7 +50,9 @@ namespace hitfit{
 		 double                  lepw_mass,
 		 double                  hadw_mass,
 		 double                  top_mass,
-		 int                     nu_sol=-1);
+                 int                     nu_sol=-1,
+         bool                    requireMatchedBtag=false);
+
 
     ~bpkRunHitFit();
 
@@ -65,9 +68,10 @@ namespace hitfit{
 
     void SetMETResolution(const Resolution& res);
 
+        //const TopGluon_Fit& GetTopGluonFit() const;
     const Top_Fit& GetTopFit() const;
 
-    std::vector<Fit_Result>::size_type FitAllPermutation(const JetInfoBranches& jet);
+    std::vector<Fit_Result>::size_type FitAllPermutation(const JetInfoBranches& jet, std::vector<bool> jetisbtag);
 
     std::vector<Lepjets_Event> GetUnfittedEvent();
 

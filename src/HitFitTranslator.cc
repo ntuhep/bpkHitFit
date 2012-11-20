@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "TopQuarkAnalysis/bpkHitFit/interface/HitFitTranslator.h"
+#include "MyAna/bpkHitFit/interface/HitFitTranslator.h"
 #include "MyAna/bprimeKit/interface/format.h"
 
 namespace hitfit {

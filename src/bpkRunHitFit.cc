@@ -180,7 +180,7 @@ namespace hitfit{
     }
 
     do {
-       std::cout << "perm " << Npermutation_ << " b4reduced " << NpermutationB4Reduced_ << std::endl;
+       if(_requireMatchedBtag) std::cout << "perm " << Npermutation_ << " b4reduced " << NpermutationB4Reduced_ << std::endl;
       NpermutationB4Reduced_++;
       if(_requireMatchedBtag) {
          // require at least one bjet

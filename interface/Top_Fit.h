@@ -82,6 +82,7 @@ class Top_Fit_Args
 //   bool print_event_flag - If true, print the event after the fit.
 //   bool do_higgs_flag    - If true, fit ttH events.
 //   bool do_topgluon_flag - If true, fit ExcitedQuark (top + gluon) events.
+//   bool do_exoticdecay_flag - If true, fit TT->qWqZ or TT->qWqH events.
 //   double jet_mass_cut   - Reject events with jet masses larger than this.
 //   double mwhad_min_cut  - Reject events with hadronic W mass before
 //                           fitting smaller than this.
@@ -107,6 +108,7 @@ public:
      - bool <i>print_event_flag</i>.
      - bool <i>do_higgs_flag</i>.
      - bool <i>do_topgluon_flag</i>.
+     - bool <i>do_exoticdecay_flag</i>.
      - double <i>jet_mass_cut</i>.
      - double <i>mwhad_min_cut</i>.
      - double <i>mwhad_max_cut</i>.

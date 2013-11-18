@@ -100,6 +100,11 @@ public:
    */
   bool do_topgluon_flag () const;
 
+  /**
+     @brief Return the <i>do_exoticdecay_flag</i> parameter.
+   */
+  bool do_exoticdecay_flag () const;
+
 private:
   // Hold on to parameter values.
 
@@ -125,6 +130,12 @@ private:
       \f$ t\bar{t} \f$  event.
    */
   bool _do_topgluon_flag;
+
+  /**
+     If <b>TRUE</b>, then fit  \f$ T\bar{T}\ra qWqZ \f$  events. Otherwise fit
+      \f$ t\bar{t} \f$  event.
+   */
+  bool _do_exoticdecay_flag;
 
 };
 

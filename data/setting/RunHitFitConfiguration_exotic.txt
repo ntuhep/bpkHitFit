@@ -45,10 +45,10 @@ solve_nu_tmass = true
 do_higgs_flag = false
 
 # Fit t*t* -> tgtg -> l+jets + gg
-do_topgluon_flag = true
+do_topgluon_flag = false
 
 # Fit TT -> qWqZ or TT -> qWqH
-do_exoticdecay_flag = false
+do_exoticdecay_flag = true
 
 # If true, print event after fit in Top_Fit fitter.
 # If false, do not print event after fit in Top_Fit fitter.

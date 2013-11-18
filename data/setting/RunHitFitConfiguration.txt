@@ -47,6 +47,9 @@ do_higgs_flag = false
 # Fit t*t* -> tgtg -> l+jets + gg
 do_topgluon_flag = false
 
+# Fit TT -> qWqZ or TT -> qWqH
+do_exoticdecay_flag = false
+
 # If true, print event after fit in Top_Fit fitter.
 # If false, do not print event after fit in Top_Fit fitter.
 # Should always be set to FALSE
@@ -81,7 +84,7 @@ use_e = true
 # Tevatron Run 1 : e_com = 1800
 # Tevatron Run 2 : e_com = 1960
 # LHC Run        : e_com = 7000, 8000, 10000, 12000, 13000, 14000
-e_com = 7000
+e_com = 8000
 
 # If this is true and the event does not have a neutrino,
 # then the fit will be done without the overall transverse

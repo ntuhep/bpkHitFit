@@ -66,7 +66,8 @@ Constrained_Top_Args::Constrained_Top_Args (const Defaults& defs)
   : _bmass (defs.get_float ("bmass")),
     _fourvec_constrainer_args (defs),
     _equal_side(defs.get_bool("equal_side")),
-    _do_topgluon_flag (defs.get_bool ("do_topgluon_flag"))
+    _do_topgluon_flag (defs.get_bool ("do_topgluon_flag")),
+    _do_exoticdecay_flag (defs.get_bool ("do_exoticdecay_flag"))
 
 {
 }
@@ -109,6 +110,16 @@ bool Constrained_Top_Args::do_topgluon_flag () const
 //
 {
   return _do_topgluon_flag;
+}
+
+
+bool Constrained_Top_Args::do_exoticdecay_flag () const
+//
+// Purpose: Return the do_exoticdecay_flag parameter.
+//          See the header for documentation.
+//
+{
+  return _do_exoticdecay_flag;
 }
 
 

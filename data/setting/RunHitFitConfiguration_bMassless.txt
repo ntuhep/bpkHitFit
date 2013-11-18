@@ -45,7 +45,7 @@ solve_nu_tmass = true
 do_higgs_flag = false
 
 # Fit t*t* -> tgtg -> l+jets + gg
-do_topgluon_flag = true
+do_topgluon_flag = false
 
 # Fit TT -> qWqZ or TT -> qWqH
 do_exoticdecay_flag = false
@@ -60,7 +60,7 @@ print_event_flag = false
 #
 
 # Mass of the b-quark.
-bmass = 4.7
+bmass = 0
 
 # Require that the leptonic top and hadronic top to have equal mass after
 # the fit.

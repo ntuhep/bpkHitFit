@@ -8,6 +8,7 @@ defaultHitFitParameters = cms.PSet(
     MuonResolution     = cms.untracked.FileInPath("TopQuarkAnalysis/TopHitFit/data/resolution/tqafMuonResolution.txt"),
     MuonObjRes         = cms.untracked.bool(False),
     UdscJetResolution  = cms.untracked.FileInPath("TopQuarkAnalysis/TopHitFit/data/resolution/tqafUdscJetResolution.txt"),
+    UdscJetResolution2  = cms.untracked.FileInPath(""),
     BJetResolution     = cms.untracked.FileInPath("TopQuarkAnalysis/TopHitFit/data/resolution/tqafBJetResolution.txt"),
     JetObjRes          = cms.untracked.bool(False),
     JetCorrectionLevel = cms.untracked.string('L7Parton'),

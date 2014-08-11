@@ -73,6 +73,7 @@ class doHitFit {
 
     //Path of text file containing the udsc jet resolution.
     edm::FileInPath UdscJetResolution_;
+   edm::FileInPath UdscJetResolution2_; //second resolution for split jets
 
     //Path of text file containing the b jet resolution.
     edm::FileInPath BJetResolution_;

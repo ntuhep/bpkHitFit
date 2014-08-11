@@ -106,6 +106,7 @@ namespace hitfit {
     std::string resolution_filename = CMSSW_BASE +
       std::string("/src/TopQuarkAnalysis/TopHitFit/data/resolution/tqafUdscJetResolution.txt");
     udscResolution_ = EtaDepResolution(resolution_filename);
+    udscResolution2_ = EtaDepResolution(resolution_filename); //default to same as first resolution
     resolution_filename = CMSSW_BASE +
       std::string("/src/TopQuarkAnalysis/TopHitFit/data/resolution/tqafBJetResolution.txt");
     bResolution_    = EtaDepResolution(resolution_filename);
@@ -116,12 +117,14 @@ namespace hitfit {
   } // JetTranslator::JetTranslator()
 
 
-  JetTranslator::JetTranslator(const std::string& udscFile,
-			       const std::string& bFile)
+   JetTranslator::JetTranslator(const std::string& udscFile,
+                                const std::string& udscFile2,
+                                const std::string& bFile)
   {
 
     std::string CMSSW_BASE(getenv("CMSSW_BASE"));
     std::string udscResolution_filename;
+    std::string udscResolution2_filename;
     std::string bResolution_filename;
 
     if (udscFile.empty()) {
@@ -129,6 +132,12 @@ namespace hitfit {
         std::string("/src/TopQuarkAnalysis/TopHitFit/data/resolution/tqafUdscJetResolution.txt");
     } else {
       udscResolution_filename = udscFile;
+    }
+
+    if (udscFile2.empty()) {
+       udscResolution2_filename = udscResolution_filename; //default to same as first resolution
+    } else {
+      udscResolution2_filename = udscFile2;
     }
 
     if (bFile.empty()) {
@@ -139,6 +148,7 @@ namespace hitfit {
     }
 
     udscResolution_ = EtaDepResolution(udscResolution_filename);
+    udscResolution2_ = EtaDepResolution(udscResolution2_filename);
     bResolution_    = EtaDepResolution(bResolution_filename);
     jetCorrectionLevel_ = "L7Parton";
     jes_  = 1.0;
@@ -147,14 +157,16 @@ namespace hitfit {
   } // JetTranslator::JetTranslator(const std::string& ifile)
 
   JetTranslator::JetTranslator(const std::string& udscFile,
-			       const std::string& bFile,
+                               const std::string& udscFile2,
+                               const std::string& bFile,
                                const std::string& jetCorrectionLevel,
-			       double jes,
-			       double jesB)
+                               double jes,
+                               double jesB)
   {
 
     std::string CMSSW_BASE(getenv("CMSSW_BASE"));
     std::string udscResolution_filename;
+    std::string udscResolution2_filename;
     std::string bResolution_filename;
 
     if (udscFile.empty()) {
@@ -162,6 +174,12 @@ namespace hitfit {
         std::string("/src/TopQuarkAnalysis/TopHitFit/data/resolution/tqafUdscJetResolution.txt");
     } else {
       udscResolution_filename = udscFile;
+    }
+
+    if (udscFile2.empty()) {
+       udscResolution2_filename = udscResolution_filename; //default to same as first resolution
+    } else {
+      udscResolution2_filename = udscFile2;
     }
 
     if (bFile.empty()) {
@@ -172,6 +190,7 @@ namespace hitfit {
     }
 
     udscResolution_ = EtaDepResolution(udscResolution_filename);
+    udscResolution2_ = EtaDepResolution(udscResolution2_filename);
     bResolution_    = EtaDepResolution(bResolution_filename);
     jetCorrectionLevel_ = jetCorrectionLevel;
     jes_  = jes;
@@ -198,30 +217,32 @@ namespace hitfit {
     Vector_Resolution jet_resolution;
 
     if (type == hitfit::hadb_label || type == hitfit::lepb_label || type == hitfit::higgs_label) {
-      jet_resolution = bResolution_.GetResolution(jet_eta);
+       jet_resolution = bResolution_.GetResolution(jet_eta);
 
-      //float scale = jets.Pt[index]>0. ? jesB_*jets.PtCorrL7b[index] / jets.Pt[index] : 0.;
-      float scale = jesB_;
-      if(jets.Pt[index]>0.) {
-	if(jetCorrectionLevel_.find("L7")!=std::string::npos) scale*=jets.PtCorrL7b[index] / jets.Pt[index];
-	else if(jetCorrectionLevel_.find("L3")!=std::string::npos) scale*=jets.PtCorrL3[index] / jets.Pt[index];
-      }
-
-      p = Fourvec(jets.Px[index]*scale,jets.Py[index]*scale,jets.Pz[index]*scale,jets.Energy[index]*scale);
-
+       float scale = jesB_;
+       if(jets.Pt[index]>0.) {
+          if(jetCorrectionLevel_.find("L7")!=std::string::npos) scale*=jets.PtCorrL7b[index] / jets.Pt[index];
+          else if(jetCorrectionLevel_.find("L3")!=std::string::npos) scale*=jets.PtCorrL3[index] / jets.Pt[index];
+       }
+       
+       p = Fourvec(jets.Px[index]*scale,jets.Py[index]*scale,jets.Pz[index]*scale,jets.Energy[index]*scale);
+       
     } else {
-      jet_resolution = udscResolution_.GetResolution(jet_eta);
-
-      //float scale = jets.Pt[index]>0. ? jes_*jets.PtCorrL7uds[index] / jets.Pt[index] : 0.;
-      float scale = jes_;
-      if(jets.Pt[index]>0.) {
-	if(jetCorrectionLevel_.find("L7")!=std::string::npos) scale*=jets.PtCorrL7uds[index] / jets.Pt[index];
-	else if(jetCorrectionLevel_.find("L3")!=std::string::npos) scale*=jets.PtCorrL3[index] / jets.Pt[index];
-      }
-
-      p = Fourvec(jets.Px[index]*scale,jets.Py[index]*scale,jets.Pz[index]*scale,jets.Energy[index]*scale);
+       float splitLabel = jets.Unc[index];
+       if (splitLabel==(int)splitLabel && splitLabel>0)
+          jet_resolution = udscResolution2_.GetResolution(jet_eta);
+       else
+          jet_resolution = udscResolution_.GetResolution(jet_eta);
+       
+       float scale = jes_;
+       if(jets.Pt[index]>0.) {
+          if(jetCorrectionLevel_.find("L7")!=std::string::npos) scale*=jets.PtCorrL7uds[index] / jets.Pt[index];
+          else if(jetCorrectionLevel_.find("L3")!=std::string::npos) scale*=jets.PtCorrL3[index] / jets.Pt[index];
+       }
+       
+       p = Fourvec(jets.Px[index]*scale,jets.Py[index]*scale,jets.Pz[index]*scale,jets.Energy[index]*scale);
     }
-
+    
     Lepjets_Event_Jet retjet(p,
                              type,
                              jet_resolution);
@@ -236,6 +257,11 @@ namespace hitfit {
     return udscResolution_;
   }
 
+  const EtaDepResolution&
+  JetTranslator::udscResolution2() const
+  {
+    return udscResolution2_;
+  }
 
   const EtaDepResolution&
   JetTranslator::bResolution() const
@@ -248,7 +274,7 @@ namespace hitfit {
   JetTranslator::CheckEta(const JetInfoBranches& jets, const int index) const
   {
     double jet_eta = jets.Eta[index];
-    return bResolution_.CheckEta(jet_eta) && udscResolution_.CheckEta(jet_eta);
+    return bResolution_.CheckEta(jet_eta) && udscResolution_.CheckEta(jet_eta) && udscResolution2_.CheckEta(jet_eta);
   }
 
   // METTranslator

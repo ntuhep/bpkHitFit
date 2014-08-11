@@ -43,17 +43,19 @@ namespace hitfit {
   class JetTranslator {
 
   public:
-
-    JetTranslator();
-    JetTranslator(const std::string& udscFile,
-		  const std::string& bFile);
-    JetTranslator(const std::string& udscFile,
-		  const std::string& bFile,
-		  const std::string& jetCorrectionLevel,
-		  double jes,
-		  double jesB);
-    ~JetTranslator();
-
+     
+     JetTranslator();
+     JetTranslator(const std::string& udscFile,
+                   const std::string& udscFile2,
+                   const std::string& bFile);
+     JetTranslator(const std::string& udscFile,
+                   const std::string& udscFile2,
+                   const std::string& bFile,
+                   const std::string& jetCorrectionLevel,
+                   double jes,
+                   double jesB);
+     ~JetTranslator();
+     
     Lepjets_Event_Jet operator()(const JetInfoBranches& jets,
 				 const int index,
 				 int type = hitfit::unknown_label,
@@ -61,6 +63,7 @@ namespace hitfit {
 
 
     const EtaDepResolution& udscResolution() const;
+    const EtaDepResolution& udscResolution2() const;
     const EtaDepResolution& bResolution() const;
 
     bool CheckEta(const JetInfoBranches& jets, const int index) const;
@@ -69,6 +72,7 @@ namespace hitfit {
   private:
 
     EtaDepResolution udscResolution_;
+    EtaDepResolution udscResolution2_;
     EtaDepResolution bResolution_;
 
     std::string jetCorrectionLevel_;

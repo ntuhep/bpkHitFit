@@ -2,8 +2,8 @@
 
 #include "TopQuarkAnalysis/TopHitFit/interface/Top_Decaykin.h"
 
-#include "bpkFrameWork/bprimeKit/interface/bpkUtils.h"
 #include "bpkFrameWork/bprimeKit/interface/format.h"
+#include "bpkFrameWork/bpkUtility/interface/bpkUtils.h"
 #include "bpkFrameWork/bpkHitFit/interface/HitFitInfoBranches.h"
 #include "bpkFrameWork/bpkHitFit/interface/doHitFit.h"
 #include "TLorentzVector.h"

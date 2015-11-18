@@ -14,70 +14,71 @@ static const unsigned int MAX_HITFIT_JET =   8 ;
 static const unsigned int MAX_HITFIT     = 1680;
 static const unsigned int MAX_HITFIT_VAR =  32 ;
 
-namespace hitfit{
+namespace hitfit
+{
 
-  class bpkRunHitFit {
+class bpkRunHitFit {
 
-  private:
+private:
 
-    LeptonTranslator     _LeptonTranslator;
-    JetTranslator        _JetTranslator;
-    METTranslator        _METTranslator;
+   LeptonTranslator     _LeptonTranslator;
+   JetTranslator        _JetTranslator;
+   METTranslator        _METTranslator;
 
-    Lepjets_Event                       _event;
+   Lepjets_Event                       _event;
 
-    std::vector<int>                   _jets; //index of jet
+   std::vector<int>                   _jets; //index of jet
 
-    bool                                _jetObjRes;
+   bool                                _jetObjRes;
 
-        //TopGluon_Fit                             _TopGluon_Fit;
-    Top_Fit                             _Top_Fit;
+   //TopGluon_Fit                             _TopGluon_Fit;
+   Top_Fit                             _Top_Fit;
 
-    std::vector<Lepjets_Event>          _Unfitted_Events;
+   std::vector<Lepjets_Event>          _Unfitted_Events;
 
-    std::vector<Fit_Result>             _Fit_Results;
+   std::vector<Fit_Result>             _Fit_Results;
 
-    int                  _nu_solution;
+   int                  _nu_solution;
 
-        bool _requireMatchedBtag;
+   bool _requireMatchedBtag;
 
-  public:
+public:
 
-    bpkRunHitFit(const LeptonTranslator& lep,
-		 const JetTranslator&    jet,
-		 const METTranslator&    met,
-		 const std::string       default_file,
-		 double                  lepw_mass,
-		 double                  hadw_mass,
-		 double                  top_mass,
-                 int                     nu_sol=-1,
-         bool                    requireMatchedBtag=false);
+   bpkRunHitFit( const LeptonTranslator& lep,
+                 const JetTranslator&    jet,
+                 const METTranslator&    met,
+                 const std::string       default_file,
+                 double                  lepw_mass,
+                 double                  hadw_mass,
+                 double                  top_mass,
+                 int                     nu_sol = -1,
+                 bool                    requireMatchedBtag = false );
 
 
-    ~bpkRunHitFit();
+   ~bpkRunHitFit();
 
-    void clear();
+   void clear();
 
-    void AddLepton(const LepInfoBranches& leptons, const int index, bool useObjRes = false);
+   void AddLepton( const LepInfoBranches& leptons, const int index, bool useObjRes = false );
 
-    void AddJet(const int index, bool useObjRes = false);
- 
-    void SetMet(const EvtInfoBranches& evt, bool useObjRes = false);
+   void AddJet( const int index, bool useObjRes = false );
 
-    void SetKtResolution(const Resolution& res);
+   void SetMet( const EvtInfoBranches& evt, bool useObjRes = false );
 
-    void SetMETResolution(const Resolution& res);
+   void SetKtResolution( const Resolution& res );
 
-        //const TopGluon_Fit& GetTopGluonFit() const;
-    const Top_Fit& GetTopFit() const;
+   void SetMETResolution( const Resolution& res );
 
-    std::vector<Fit_Result>::size_type FitAllPermutation(const JetInfoBranches& jet, std::vector<bool> jetisbtag);
+   //const TopGluon_Fit& GetTopGluonFit() const;
+   const Top_Fit& GetTopFit() const;
 
-    std::vector<Lepjets_Event> GetUnfittedEvent();
+   std::vector<Fit_Result>::size_type FitAllPermutation( const JetInfoBranches& jet, std::vector<bool> jetisbtag );
 
-    std::vector<Fit_Result> GetFitAllPermutation();
+   std::vector<Lepjets_Event> GetUnfittedEvent();
 
-  };
+   std::vector<Fit_Result> GetFitAllPermutation();
+
+};
 
 } // namespace hitfit
 

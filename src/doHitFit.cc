@@ -13,84 +13,84 @@ const unsigned doHitFit::_MIN_HITFIT_JET[] = {
    kMIN_HITFIT_JET_TSTAR //TSTAR
 };
 
-doHitFit::doHitFit(const edm::ParameterSet& iConfig, const EvtInfoBranches &evt, 
-                                                 const LepInfoBranches &lep,
-                                                 const JetInfoBranches &jets, const GenInfoBranches &gens):
-   EvtInfo(&evt),
-   LepInfo(&lep),
-   JetInfo(&jets),
-   GenInfo(&gens),
-   _fitType(iConfig.getUntrackedParameter<int>("FitType",0)),
-   _onlyBest(iConfig.getUntrackedParameter<bool>("SaveOnlyBest",false)),
-   debug_(iConfig.getUntrackedParameter<bool>("Debug",false)),
-   Default_(iConfig.getUntrackedParameter<edm::FileInPath>("Default",
-                                                           edm::FileInPath(std::string("MyAna/bpkHitFit/data/setting/RunHitFitConfiguration.txt")))),
-   ElectronResolution_(iConfig.getUntrackedParameter<edm::FileInPath>(std::string("ElectronResolution"),
-                                                                      edm::FileInPath(std::string("TopQuarkAnalysis/TopHitFit/data/resolution/tqafElectronResolution.txt")))),
-   ElectronObjRes_ (iConfig.getUntrackedParameter<bool>("ElectronObjRes", bool(false))),
-   MuonResolution_(iConfig.getUntrackedParameter<edm::FileInPath>("MuonResolution",
-                                                                  edm::FileInPath(std::string("TopQuarkAnalysis/TopHitFit/data/resolution/tqafMuonResolution.txt")))),
-   MuonObjRes_(iConfig.getUntrackedParameter<bool>("MuonObjRes", bool(false))),
-   UdscJetResolution_(iConfig.getUntrackedParameter<edm::FileInPath>("UdscJetResolution",
-                                                                     edm::FileInPath(std::string("TopQuarkAnalysis/TopHitFit/data/resolution/tqafUdscJetResolution.txt")))),
-   UdscJetResolution2_(iConfig.getUntrackedParameter<edm::FileInPath>("UdscJetResolution2",
-                                                                      edm::FileInPath(std::string("TopQuarkAnalysis/TopHitFit/data/resolution/tqafUdscJetResolution.txt")))),
-   BJetResolution_(iConfig.getUntrackedParameter<edm::FileInPath>("BJetResolution",
-                                                                  edm::FileInPath(std::string("TopQuarkAnalysis/TopHitFit/data/resolution/tqafBJetResolution.txt")))),
-   JetObjRes_(iConfig.getUntrackedParameter<bool>("JetObjRes", bool(false))),
-   JetCorrectionLevel_(iConfig.getUntrackedParameter<std::string>("JetCorrectionLevel","L7Parton")),
-   UdscJES_(iConfig.getUntrackedParameter<double>("UdscJES", 1.0)),
-   BJES_(iConfig.getUntrackedParameter<double>("BJES", 1.0)),
-   METResolution_(iConfig.getUntrackedParameter<edm::FileInPath>("METResolution",
-                                                                 edm::FileInPath(std::string("TopQuarkAnalysis/TopHitFit/data/resolution/tqafKtResolution.txt")))),
-   METObjRes_(iConfig.getUntrackedParameter<bool>("METsObjRes", bool(false))),
-   LepWMass_(iConfig.getUntrackedParameter<double>("LepWMass",80.4)),
-   HadWMass_(iConfig.getUntrackedParameter<double>("HadWMass",80.4)),
-   TopMass_(iConfig.getUntrackedParameter<double>("TopMass",0.0)),
+doHitFit::doHitFit( const edm::ParameterSet& iConfig, const EvtInfoBranches& evt,
+                    const LepInfoBranches& lep,
+                    const JetInfoBranches& jets, const GenInfoBranches& gens ):
+   EvtInfo( &evt ),
+   LepInfo( &lep ),
+   JetInfo( &jets ),
+   GenInfo( &gens ),
+   _fitType( iConfig.getUntrackedParameter<int>( "FitType", 0 ) ),
+   _onlyBest( iConfig.getUntrackedParameter<bool>( "SaveOnlyBest", false ) ),
+   debug_( iConfig.getUntrackedParameter<bool>( "Debug", false ) ),
+   Default_( iConfig.getUntrackedParameter<edm::FileInPath>( "Default",
+             edm::FileInPath( std::string( "MyAna/bpkHitFit/data/setting/RunHitFitConfiguration.txt" ) ) ) ),
+   ElectronResolution_( iConfig.getUntrackedParameter<edm::FileInPath>( std::string( "ElectronResolution" ),
+                        edm::FileInPath( std::string( "TopQuarkAnalysis/TopHitFit/data/resolution/tqafElectronResolution.txt" ) ) ) ),
+   ElectronObjRes_ ( iConfig.getUntrackedParameter<bool>( "ElectronObjRes", bool( false ) ) ),
+   MuonResolution_( iConfig.getUntrackedParameter<edm::FileInPath>( "MuonResolution",
+                    edm::FileInPath( std::string( "TopQuarkAnalysis/TopHitFit/data/resolution/tqafMuonResolution.txt" ) ) ) ),
+   MuonObjRes_( iConfig.getUntrackedParameter<bool>( "MuonObjRes", bool( false ) ) ),
+   UdscJetResolution_( iConfig.getUntrackedParameter<edm::FileInPath>( "UdscJetResolution",
+                       edm::FileInPath( std::string( "TopQuarkAnalysis/TopHitFit/data/resolution/tqafUdscJetResolution.txt" ) ) ) ),
+   UdscJetResolution2_( iConfig.getUntrackedParameter<edm::FileInPath>( "UdscJetResolution2",
+                        edm::FileInPath( std::string( "TopQuarkAnalysis/TopHitFit/data/resolution/tqafUdscJetResolution.txt" ) ) ) ),
+   BJetResolution_( iConfig.getUntrackedParameter<edm::FileInPath>( "BJetResolution",
+                    edm::FileInPath( std::string( "TopQuarkAnalysis/TopHitFit/data/resolution/tqafBJetResolution.txt" ) ) ) ),
+   JetObjRes_( iConfig.getUntrackedParameter<bool>( "JetObjRes", bool( false ) ) ),
+   JetCorrectionLevel_( iConfig.getUntrackedParameter<std::string>( "JetCorrectionLevel", "L7Parton" ) ),
+   UdscJES_( iConfig.getUntrackedParameter<double>( "UdscJES", 1.0 ) ),
+   BJES_( iConfig.getUntrackedParameter<double>( "BJES", 1.0 ) ),
+   METResolution_( iConfig.getUntrackedParameter<edm::FileInPath>( "METResolution",
+                   edm::FileInPath( std::string( "TopQuarkAnalysis/TopHitFit/data/resolution/tqafKtResolution.txt" ) ) ) ),
+   METObjRes_( iConfig.getUntrackedParameter<bool>( "METsObjRes", bool( false ) ) ),
+   LepWMass_( iConfig.getUntrackedParameter<double>( "LepWMass", 80.4 ) ),
+   HadWMass_( iConfig.getUntrackedParameter<double>( "HadWMass", 80.4 ) ),
+   TopMass_( iConfig.getUntrackedParameter<double>( "TopMass", 0.0 ) ),
    //TopMass_(iConfig.getUntrackedParameter<double>("TopMass",172.0)),
-   nuSolution_(iConfig.getUntrackedParameter<int>("NuSolution",2)),
-   requireMatchedBtag_(iConfig.getUntrackedParameter<bool>("RequireMatchedBtag",bool(false))),
-   LeptonTranslator_(ElectronResolution_.fullPath(), MuonResolution_.fullPath()),
-   JetTranslator_(UdscJetResolution_.fullPath(), UdscJetResolution2_.fullPath(), BJetResolution_.fullPath(),JetCorrectionLevel_,UdscJES_,BJES_),
-   METTranslator_(METResolution_.fullPath()),
-   MinLeptonPt_(iConfig.getUntrackedParameter<double>("MinLeptonPt",15.0)),
-   MinJetPt_(iConfig.getUntrackedParameter<double>("MinJetPt",15.0)),
-   MinMET_(iConfig.getUntrackedParameter<double>("MinMET",0.0)),
-   MaxNJet_(iConfig.getUntrackedParameter<unsigned>("MaxNJet",unsigned(4)))
+   nuSolution_( iConfig.getUntrackedParameter<int>( "NuSolution", 2 ) ),
+   requireMatchedBtag_( iConfig.getUntrackedParameter<bool>( "RequireMatchedBtag", bool( false ) ) ),
+   LeptonTranslator_( ElectronResolution_.fullPath(), MuonResolution_.fullPath() ),
+   JetTranslator_( UdscJetResolution_.fullPath(), UdscJetResolution2_.fullPath(), BJetResolution_.fullPath(), JetCorrectionLevel_, UdscJES_, BJES_ ),
+   METTranslator_( METResolution_.fullPath() ),
+   MinLeptonPt_( iConfig.getUntrackedParameter<double>( "MinLeptonPt", 15.0 ) ),
+   MinJetPt_( iConfig.getUntrackedParameter<double>( "MinJetPt", 15.0 ) ),
+   MinMET_( iConfig.getUntrackedParameter<double>( "MinMET", 0.0 ) ),
+   MaxNJet_( iConfig.getUntrackedParameter<unsigned>( "MaxNJet", unsigned( 4 ) ) )
 {
 
-   if(MaxNJet_ < _MIN_HITFIT_JET[_fitType]) {
+   if( MaxNJet_ < _MIN_HITFIT_JET[_fitType] ) {
       std::cout << "Error, MaxNJet(" << MaxNJet_ << ") is smaller than MIN_HITFIT_JET(" << _MIN_HITFIT_JET[_fitType] << ") ! Exiting !\n"  ;
-      exit(1);
+      exit( 1 );
    }
-   if (MaxNJet_ > kMAX_HITFIT_JET) {
+   if ( MaxNJet_ > kMAX_HITFIT_JET ) {
       std::cout << "Error, MaxNJet is larger than kMAX_HITFIT_JET ! Exiting !\n"  ;
-      exit(1);
+      exit( 1 );
    }
 
-   HitFit = new hitfit::bpkRunHitFit(LeptonTranslator_,
-                                     JetTranslator_,
-                                     METTranslator_,
-                                     Default_.fullPath(),
-                                     LepWMass_,
-                                     HadWMass_,
-                                     TopMass_,
-                                     nuSolution_,
-                                     requireMatchedBtag_);
+   HitFit = new hitfit::bpkRunHitFit( LeptonTranslator_,
+                                      JetTranslator_,
+                                      METTranslator_,
+                                      Default_.fullPath(),
+                                      LepWMass_,
+                                      HadWMass_,
+                                      TopMass_,
+                                      nuSolution_,
+                                      requireMatchedBtag_ );
 
    HitFit->clear();
 
    _ranHitFit = false;
-   if(debug_) std::cout << "Created doHitFit\n";
+   if( debug_ ) { std::cout << "Created doHitFit\n"; }
 }
 
 doHitFit::~doHitFit()
 {
 }
 
-bool doHitFit::runHitFit(const int lepIdx, const std::vector<int> jetsIdx, std::vector<bool> jetisbtag)
+bool doHitFit::runHitFit( const int lepIdx, const std::vector<int> jetsIdx, std::vector<bool> jetisbtag )
 {
-   if(debug_) std::cout << "runHitFit: Lep index " << lepIdx << ", number of jets " << jetsIdx.size() << std::endl;
+   if( debug_ ) { std::cout << "runHitFit: Lep index " << lepIdx << ", number of jets " << jetsIdx.size() << std::endl; }
    // We haven't run HitFit yet, so we set the flag to false
    _ranHitFit = false ;
    HitFit->clear();
@@ -98,13 +98,13 @@ bool doHitFit::runHitFit(const int lepIdx, const std::vector<int> jetsIdx, std::
    _lepIdx = lepIdx;
    _jetsIdx = jetsIdx;
 
-   if(_lepIdx < 0 || _lepIdx >= LepInfo->Size) {
+   if( _lepIdx < 0 || _lepIdx >= LepInfo->Size ) {
       std::cout << "Lepton index " << _lepIdx << " invalid, can't run HitFit!\n";
       return _ranHitFit;
    }
 
-   for(unsigned i=0; i<_jetsIdx.size(); i++) {
-      if(_jetsIdx[i] < 0 || _jetsIdx[i] >= JetInfo->Size) {
+   for( unsigned i = 0; i < _jetsIdx.size(); i++ ) {
+      if( _jetsIdx[i] < 0 || _jetsIdx[i] >= JetInfo->Size ) {
          std::cout << "Jet index " << _jetsIdx[i] << " invalid, can't run HitFit!\n";
          return _ranHitFit;
       }
@@ -116,18 +116,16 @@ bool doHitFit::runHitFit(const int lepIdx, const std::vector<int> jetsIdx, std::
 
    // Insert the lepton into HitFit, check if the lepton
    // is within acceptance of the eta-dependent resolution.
-   if (LeptonTranslator_.CheckEta(*LepInfo,_lepIdx) &&
-       LepInfo->Pt[_lepIdx] > MinLeptonPt_) {
-      if(11==LepInfo->LeptonType[_lepIdx]) {
-         HitFit->AddLepton(*LepInfo,_lepIdx,ElectronObjRes_);
+   if ( LeptonTranslator_.CheckEta( *LepInfo, _lepIdx ) &&
+        LepInfo->Pt[_lepIdx] > MinLeptonPt_ ) {
+      if( 11 == LepInfo->LeptonType[_lepIdx] ) {
+         HitFit->AddLepton( *LepInfo, _lepIdx, ElectronObjRes_ );
+      } else {
+         HitFit->AddLepton( *LepInfo, _lepIdx, MuonObjRes_ );
       }
-      else {
-         HitFit->AddLepton(*LepInfo,_lepIdx,MuonObjRes_);
-      }
-      if(debug_) std::cout << "  Added Lepton to HitFit\n";
-   }
-   else {
-      if(debug_) std::cout << "  Lepton doesn't pass HitFit requirements\n";
+      if( debug_ ) { std::cout << "  Added Lepton to HitFit\n"; }
+   } else {
+      if( debug_ ) { std::cout << "  Lepton doesn't pass HitFit requirements\n"; }
       return _ranHitFit;
    }
 
@@ -136,16 +134,16 @@ bool doHitFit::runHitFit(const int lepIdx, const std::vector<int> jetsIdx, std::
    // copy jet which pass the minimal criteria as input to HitFit
    // There may more jets which pass the minimal criteria as input
    // to HitFit
-   for (std::vector<int>::const_iterator jet = _jetsIdx.begin() ; jet != _jetsIdx.end() ; ++jet) {
-      if (JetInfo->Pt[*jet] > MinJetPt_ && JetTranslator_.CheckEta(*JetInfo,*jet)) {
-         hitfitJet.push_back(*jet);
-         if(debug_) std::cout << "  Jet " << *jet << " passes HitFit requirements\n";
+   for ( std::vector<int>::const_iterator jet = _jetsIdx.begin() ; jet != _jetsIdx.end() ; ++jet ) {
+      if ( JetInfo->Pt[*jet] > MinJetPt_ && JetTranslator_.CheckEta( *JetInfo, *jet ) ) {
+         hitfitJet.push_back( *jet );
+         if( debug_ ) { std::cout << "  Jet " << *jet << " passes HitFit requirements\n"; }
       }
    }
 
    // if there is not enough jets, return
-   if (hitfitJet.size() < _MIN_HITFIT_JET[_fitType]) {
-      if(debug_) std::cout << "  Only " << hitfitJet.size() << " jets---not enough\n";
+   if ( hitfitJet.size() < _MIN_HITFIT_JET[_fitType] ) {
+      if( debug_ ) { std::cout << "  Only " << hitfitJet.size() << " jets---not enough\n"; }
       return _ranHitFit;
    }
 
@@ -154,36 +152,36 @@ bool doHitFit::runHitFit(const int lepIdx, const std::vector<int> jetsIdx, std::
    // the first N leading jets, we don't want HitFit to fit too many
    // permutations.
    _nHitFitJet =   hitfitJet.size() > MaxNJet_ ? MaxNJet_ : hitfitJet.size() ;
-   for (size_t j = 0 ; j != _nHitFitJet ; ++j) {
-      HitFit->AddJet(hitfitJet[j],JetObjRes_);
-      if(debug_) std::cout <<  "  Added jet " << hitfitJet[j] << " to HitFit\n";
+   for ( size_t j = 0 ; j != _nHitFitJet ; ++j ) {
+      HitFit->AddJet( hitfitJet[j], JetObjRes_ );
+      if( debug_ ) { std::cout <<  "  Added jet " << hitfitJet[j] << " to HitFit\n"; }
    }
 
    // Since we have determined how many jets have been inserted to HitFit,
    // we now remove the remaining jets in order not to mess up ourselves later !
-   hitfitJet.erase(hitfitJet.begin() + _nHitFitJet, hitfitJet.end());
+   hitfitJet.erase( hitfitJet.begin() + _nHitFitJet, hitfitJet.end() );
 
-   HitFit->SetMet(*EvtInfo,METObjRes_);
+   HitFit->SetMet( *EvtInfo, METObjRes_ );
 
    // Run HitFit and see how many permutations do we get ?
-   _nHitFit = HitFit->FitAllPermutation(*JetInfo, jetisbtag);
+   _nHitFit = HitFit->FitAllPermutation( *JetInfo, jetisbtag );
 
    // We've run HitFit !
    _ranHitFit   = true ;
 
-   if(debug_) std::cout << (_ranHitFit ? "Ran HitFit" : "HitFit not run") << std::endl;
+   if( debug_ ) { std::cout << ( _ranHitFit ? "Ran HitFit" : "HitFit not run" ) << std::endl; }
 
    return _ranHitFit;
 
 
 } // void doHitFit::runHitFit()
 
-void doHitFit::fillHitFitInfo(HitFitInfoBranches& HitFitInfo)
+void doHitFit::fillHitFitInfo( HitFitInfoBranches& HitFitInfo )
 {
-   if(debug_) std::cout << "fillHitFitInfo\n";
+   if( debug_ ) { std::cout << "fillHitFitInfo\n"; }
    isMC = EvtInfo->McFlag;
    HitFitInfo.clear(); //make sure that old information isn't kept if hitfit is false
-   if(!_ranHitFit) {
+   if( !_ranHitFit ) {
       HitFitInfo.hitfit = false;
       return;
    }
@@ -191,14 +189,14 @@ void doHitFit::fillHitFitInfo(HitFitInfoBranches& HitFitInfo)
    HitFitInfo.hitfit = true;
    HitFitInfo.nHitFit = _onlyBest ? 1 : _nHitFit;
    HitFitInfo.nHitFitJet = _nHitFitJet;
-   HitFitInfo.nHitFitXnHitFitJet = HitFitInfo.nHitFit*_nHitFitJet;
+   HitFitInfo.nHitFitXnHitFitJet = HitFitInfo.nHitFit * _nHitFitJet;
    HitFitInfo.LepInfoIndex = _lepIdx;
 
    std::vector<hitfit::Lepjets_Event>
-      unfittedEvent                               = HitFit->GetUnfittedEvent();
+   unfittedEvent                               = HitFit->GetUnfittedEvent();
    std::vector<hitfit::Fit_Result> hitfitResult  = HitFit->GetFitAllPermutation();
 
-   for(size_t k=0; k!=HitFitInfo.nHitFitJet; ++k) {
+   for( size_t k = 0; k != HitFitInfo.nHitFitJet; ++k ) {
       HitFitInfo.JetInfoIndex[k] = hitfitJet[k];
    }
 
@@ -208,9 +206,9 @@ void doHitFit::fillHitFitInfo(HitFitInfoBranches& HitFitInfo)
    double maxChi2        = 0.0       ;
    int minChi2Index  = -1 ;
 
-   if(_onlyBest) {//find best permutation
-      for (unsigned h = 0; h != _nHitFit; ++h) {
-         if (hitfitResult[h].chisq()  < minChi2 && hitfitResult[h].chisq()  > 0.0) {
+   if( _onlyBest ) { //find best permutation
+      for ( unsigned h = 0; h != _nHitFit; ++h ) {
+         if ( hitfitResult[h].chisq()  < minChi2 && hitfitResult[h].chisq()  > 0.0 ) {
             minChi2        = hitfitResult[h].chisq() ;
             minChi2Index   = h ;
          }
@@ -219,11 +217,11 @@ void doHitFit::fillHitFitInfo(HitFitInfoBranches& HitFitInfo)
 
    const int jumpTo = _onlyBest ? minChi2Index : 0;//if _onlyBest, need to get correct index
 
-   if(!_onlyBest || minChi2Index!=-1) {
+   if( !_onlyBest || minChi2Index != -1 ) {
 
-      if(isMC) {//isMC
+      if( isMC ) { //isMC
 
-         for (size_t i = 0, saw_hadw1 = 0 ; i != HitFitInfo.nHitFitJet  ; ++i) {
+         for ( size_t i = 0, saw_hadw1 = 0 ; i != HitFitInfo.nHitFitJet  ; ++i ) {
 
             int JetPartonPdgId            = JetInfo->GenPdgID[hitfitJet[i]];
 
@@ -264,19 +262,19 @@ void doHitFit::fillHitFitInfo(HitFitInfoBranches& HitFitInfo)
             // 15 b-jet from Higgs, (hitfit::higgs_label)
             // 20 unknown (hitfit::unknown_label)
 
-            if (unfittedLeptonCharge > 0) {
+            if ( unfittedLeptonCharge > 0 ) {
 
-               if (JetPartonPdgId ==  5) {
+               if ( JetPartonPdgId ==  5 ) {
                   HitFitInfo.JetPartonType[i]      = hitfit::lepb_label;
                }
-               if (JetPartonPdgId == -5) {
+               if ( JetPartonPdgId == -5 ) {
                   HitFitInfo.JetPartonType[i]      = hitfit::hadb_label;
                }
-               if (abs(JetPartonPdgId) == 4 ||
-                   abs(JetPartonPdgId) == 3 ||
-                   abs(JetPartonPdgId) == 2 ||
-                   abs(JetPartonPdgId) == 1 ) {
-                  if (bool(saw_hadw1)) {
+               if ( abs( JetPartonPdgId ) == 4 ||
+                    abs( JetPartonPdgId ) == 3 ||
+                    abs( JetPartonPdgId ) == 2 ||
+                    abs( JetPartonPdgId ) == 1 ) {
+                  if ( bool( saw_hadw1 ) ) {
                      HitFitInfo.JetPartonType[i]  = hitfit::hadw2_label;
                   } else {
                      HitFitInfo.JetPartonType[i]  = hitfit::hadw1_label;
@@ -284,26 +282,26 @@ void doHitFit::fillHitFitInfo(HitFitInfoBranches& HitFitInfo)
                   }
 
                }
-               if (abs(JetPartonPdgId) == 21) {
+               if ( abs( JetPartonPdgId ) == 21 ) {
                   HitFitInfo.JetPartonType[i]      = hitfit::isr_label;
                }
 
             }
 
-            if (unfittedLeptonCharge < 0) {
+            if ( unfittedLeptonCharge < 0 ) {
 
 
-               if (JetPartonPdgId == -5) {
+               if ( JetPartonPdgId == -5 ) {
                   HitFitInfo.JetPartonType[i]  = hitfit::lepb_label;
                }
-               if (JetPartonPdgId ==  5) {
+               if ( JetPartonPdgId ==  5 ) {
                   HitFitInfo.JetPartonType[i]  = hitfit::hadb_label;
                }
-               if (abs(JetPartonPdgId) == 4 ||
-                   abs(JetPartonPdgId) == 3 ||
-                   abs(JetPartonPdgId) == 2 ||
-                   abs(JetPartonPdgId) == 1 ) {
-                  if (bool(saw_hadw1)) {
+               if ( abs( JetPartonPdgId ) == 4 ||
+                    abs( JetPartonPdgId ) == 3 ||
+                    abs( JetPartonPdgId ) == 2 ||
+                    abs( JetPartonPdgId ) == 1 ) {
+                  if ( bool( saw_hadw1 ) ) {
                      HitFitInfo.JetPartonType[i]  = hitfit::hadw2_label;
                   } else {
                      HitFitInfo.JetPartonType[i]  = hitfit::hadw1_label;
@@ -311,7 +309,7 @@ void doHitFit::fillHitFitInfo(HitFitInfoBranches& HitFitInfo)
                   }
 
                }
-               if (abs(JetPartonPdgId) == 21) {
+               if ( abs( JetPartonPdgId ) == 21 ) {
                   HitFitInfo.JetPartonType[i]      = hitfit::isr_label;
                }
 
@@ -328,33 +326,35 @@ void doHitFit::fillHitFitInfo(HitFitInfoBranches& HitFitInfo)
             // hitfit::unknown_label : ?
             // Not set               : *
 
-            HitFitInfo.JetPartonPermutation[i]       = hitfit::jetTypeChar(HitFitInfo.JetPartonType[i]);
+            HitFitInfo.JetPartonPermutation[i]       = hitfit::jetTypeChar( HitFitInfo.JetPartonType[i] );
          }
 
-         bool saw_hadw1(false);
+         bool saw_hadw1( false );
 
-         for (size_t i = 0 ; i != HitFitInfo.nHitFitJet ; ++i) {
+         for ( size_t i = 0 ; i != HitFitInfo.nHitFitJet ; ++i ) {
 
             int JetGenJetPdgId             = JetInfo->GenPdgID[hitfitJet[i]];
-            int JetMCTag 				   = JetInfo->GenMCTag[hitfitJet[i]];
+            int JetMCTag               = JetInfo->GenMCTag[hitfitJet[i]];
             //TSTAR stuff
             //Obtaining the Gen Gluons
             int gengluon = 0;
             int gengluon_posi = -1;
             int gengluon_nega = -1;
             TLorentzVector gen_lepgluon, gen_hadgluon;
-            if(TSTAR==_fitType) {
-               for(int j = 0; j < GenInfo->Size; j++) {
-                  if(GenInfo->PdgID[j] == 21) {
+            if( TSTAR == _fitType ) {
+               for( int j = 0; j < GenInfo->Size; j++ ) {
+                  if( GenInfo->PdgID[j] == 21 ) {
                      //if gluon has mom 8, it must be mom 1
                      int mo1 = GenInfo->Mo1[j];
                      //if a gluon has mom = 8, it will not has mom2. and number of mom will be just 1
-                     if(mo1 != -1) { 
-                        if (GenInfo->PdgID[mo1] == 8){ 
-                           gengluon_posi = j;gengluon++;
+                     if( mo1 != -1 ) {
+                        if ( GenInfo->PdgID[mo1] == 8 ) {
+                           gengluon_posi = j;
+                           gengluon++;
                         }
-                        if (GenInfo->PdgID[mo1] == -8){
-                           gengluon_nega = j;gengluon++;
+                        if ( GenInfo->PdgID[mo1] == -8 ) {
+                           gengluon_nega = j;
+                           gengluon++;
                         }
                      }
                   }
@@ -363,25 +363,25 @@ void doHitFit::fillHitFitInfo(HitFitInfoBranches& HitFitInfo)
             //TSTAR stuff
 
             HitFitInfo.JetGenJetType[i]              = hitfit::unknown_label;
-	
-
-            if (unfittedLeptonCharge > 0) {
-               if(gengluon_posi != -1) gen_lepgluon.SetPtEtaPhiM(GenInfo->Pt[gengluon_posi], GenInfo->Eta[gengluon_posi], GenInfo->Phi[gengluon_posi], GenInfo->Mass[gengluon_posi]);
-               if(gengluon_nega != -1) gen_hadgluon.SetPtEtaPhiM(GenInfo->Pt[gengluon_nega], GenInfo->Eta[gengluon_nega], GenInfo->Phi[gengluon_nega], GenInfo->Mass[gengluon_nega]);
 
 
-               if (JetGenJetPdgId == 5 && JetMCTag == 20) {
+            if ( unfittedLeptonCharge > 0 ) {
+               if( gengluon_posi != -1 ) { gen_lepgluon.SetPtEtaPhiM( GenInfo->Pt[gengluon_posi], GenInfo->Eta[gengluon_posi], GenInfo->Phi[gengluon_posi], GenInfo->Mass[gengluon_posi] ); }
+               if( gengluon_nega != -1 ) { gen_hadgluon.SetPtEtaPhiM( GenInfo->Pt[gengluon_nega], GenInfo->Eta[gengluon_nega], GenInfo->Phi[gengluon_nega], GenInfo->Mass[gengluon_nega] ); }
+
+
+               if ( JetGenJetPdgId == 5 && JetMCTag == 20 ) {
                   HitFitInfo.JetGenJetType[i]      = hitfit::lepb_label;
                }
-               if (JetGenJetPdgId == -5 && JetMCTag == 20) {
+               if ( JetGenJetPdgId == -5 && JetMCTag == 20 ) {
                   HitFitInfo.JetGenJetType[i]      = hitfit::hadb_label;
                }
-               if ((abs(JetGenJetPdgId) == 4 ||
-                    abs(JetGenJetPdgId) == 3 ||
-                    abs(JetGenJetPdgId) == 2 ||
-                    abs(JetGenJetPdgId) == 1 ||
-                    abs(JetGenJetPdgId) == 5 ) && JetMCTag == 21) {
-                  if (bool(saw_hadw1)) {
+               if ( ( abs( JetGenJetPdgId ) == 4 ||
+                      abs( JetGenJetPdgId ) == 3 ||
+                      abs( JetGenJetPdgId ) == 2 ||
+                      abs( JetGenJetPdgId ) == 1 ||
+                      abs( JetGenJetPdgId ) == 5 ) && JetMCTag == 21 ) {
+                  if ( bool( saw_hadw1 ) ) {
                      HitFitInfo.JetGenJetType[i]  = hitfit::hadw2_label;
                   } else {
                      HitFitInfo.JetGenJetType[i]  = hitfit::hadw1_label;
@@ -389,38 +389,37 @@ void doHitFit::fillHitFitInfo(HitFitInfoBranches& HitFitInfo)
                   }
 
                }
-               if (abs(JetGenJetPdgId) == 21) {
-                  if(TSTAR==_fitType && JetMCTag == 20) {
+               if ( abs( JetGenJetPdgId ) == 21 ) {
+                  if( TSTAR == _fitType && JetMCTag == 20 ) {
                      TLorentzVector gluon;
-                     gluon.SetPtEtaPhiE(JetInfo->Pt[hitfitJet[i]], JetInfo->Eta[hitfitJet[i]], JetInfo->Phi[hitfitJet[i]], JetInfo->Energy[hitfitJet[i]]);
-                     if(gengluon_posi != -1 && gengluon_nega != -1) {
-                        HitFitInfo.JetGenJetType[i] = (gluon.DeltaR(gen_lepgluon) < gluon.DeltaR(gen_hadgluon)) ? hitfit::gluon1_label : hitfit::gluon2_label;
+                     gluon.SetPtEtaPhiE( JetInfo->Pt[hitfitJet[i]], JetInfo->Eta[hitfitJet[i]], JetInfo->Phi[hitfitJet[i]], JetInfo->Energy[hitfitJet[i]] );
+                     if( gengluon_posi != -1 && gengluon_nega != -1 ) {
+                        HitFitInfo.JetGenJetType[i] = ( gluon.DeltaR( gen_lepgluon ) < gluon.DeltaR( gen_hadgluon ) ) ? hitfit::gluon1_label : hitfit::gluon2_label;
                      }
-                     if(gengluon_posi != -1 && gengluon_nega == -1) {if (gluon.DeltaR(gen_lepgluon) < 0.4) HitFitInfo.JetGenJetType[i] = hitfit::gluon1_label;}
-                     if(gengluon_posi == -1 && gengluon_nega != -1) {if (gluon.DeltaR(gen_hadgluon) < 0.4) HitFitInfo.JetGenJetType[i] = hitfit::gluon2_label;}
-                  }
-                  else {
+                     if( gengluon_posi != -1 && gengluon_nega == -1 ) {if ( gluon.DeltaR( gen_lepgluon ) < 0.4 ) { HitFitInfo.JetGenJetType[i] = hitfit::gluon1_label; }}
+                     if( gengluon_posi == -1 && gengluon_nega != -1 ) {if ( gluon.DeltaR( gen_hadgluon ) < 0.4 ) { HitFitInfo.JetGenJetType[i] = hitfit::gluon2_label; }}
+                  } else {
                      HitFitInfo.JetGenJetType[i]      = hitfit::isr_label;
                   }
                }
             }
 
-            if (unfittedLeptonCharge < 0) {
-               if(gengluon_posi != -1) gen_hadgluon.SetPtEtaPhiM(GenInfo->Pt[gengluon_posi], GenInfo->Eta[gengluon_posi], GenInfo->Phi[gengluon_posi], GenInfo->Mass[gengluon_posi]);
-               if(gengluon_nega != -1) gen_lepgluon.SetPtEtaPhiM(GenInfo->Pt[gengluon_nega], GenInfo->Eta[gengluon_nega], GenInfo->Phi[gengluon_nega], GenInfo->Mass[gengluon_nega]);
+            if ( unfittedLeptonCharge < 0 ) {
+               if( gengluon_posi != -1 ) { gen_hadgluon.SetPtEtaPhiM( GenInfo->Pt[gengluon_posi], GenInfo->Eta[gengluon_posi], GenInfo->Phi[gengluon_posi], GenInfo->Mass[gengluon_posi] ); }
+               if( gengluon_nega != -1 ) { gen_lepgluon.SetPtEtaPhiM( GenInfo->Pt[gengluon_nega], GenInfo->Eta[gengluon_nega], GenInfo->Phi[gengluon_nega], GenInfo->Mass[gengluon_nega] ); }
 
-               if (JetGenJetPdgId == -5 && JetMCTag == 20) {
+               if ( JetGenJetPdgId == -5 && JetMCTag == 20 ) {
                   HitFitInfo.JetGenJetType[i]      = hitfit::lepb_label;
                }
-               if (JetGenJetPdgId ==  5 && JetMCTag == 20) {
+               if ( JetGenJetPdgId ==  5 && JetMCTag == 20 ) {
                   HitFitInfo.JetGenJetType[i]      = hitfit::hadb_label;
                }
-               if ((abs(JetGenJetPdgId) == 4 ||
-                    abs(JetGenJetPdgId) == 3 ||
-                    abs(JetGenJetPdgId) == 2 ||
-                    abs(JetGenJetPdgId) == 1 ||
-                    abs(JetGenJetPdgId) == 5 ) && JetMCTag == 21) {
-                  if (bool(saw_hadw1)) {
+               if ( ( abs( JetGenJetPdgId ) == 4 ||
+                      abs( JetGenJetPdgId ) == 3 ||
+                      abs( JetGenJetPdgId ) == 2 ||
+                      abs( JetGenJetPdgId ) == 1 ||
+                      abs( JetGenJetPdgId ) == 5 ) && JetMCTag == 21 ) {
+                  if ( bool( saw_hadw1 ) ) {
                      HitFitInfo.JetGenJetType[i]  = hitfit::hadw2_label;
                   } else {
                      HitFitInfo.JetGenJetType[i]  = hitfit::hadw1_label;
@@ -428,49 +427,48 @@ void doHitFit::fillHitFitInfo(HitFitInfoBranches& HitFitInfo)
                   }
 
                }
-               if (abs(JetGenJetPdgId) == 21) {
-                  if(TSTAR==_fitType && JetMCTag == 20) {
+               if ( abs( JetGenJetPdgId ) == 21 ) {
+                  if( TSTAR == _fitType && JetMCTag == 20 ) {
                      TLorentzVector gluon;
-                     gluon.SetPtEtaPhiE(JetInfo->Pt[hitfitJet[i]], JetInfo->Eta[hitfitJet[i]], JetInfo->Phi[hitfitJet[i]], JetInfo->Energy[hitfitJet[i]]);
-                     if(gengluon_posi != -1 && gengluon_nega != -1) {
-                        HitFitInfo.JetGenJetType[i] = (gluon.DeltaR(gen_lepgluon) < gluon.DeltaR(gen_hadgluon)) ? hitfit::gluon1_label : hitfit::gluon2_label;
+                     gluon.SetPtEtaPhiE( JetInfo->Pt[hitfitJet[i]], JetInfo->Eta[hitfitJet[i]], JetInfo->Phi[hitfitJet[i]], JetInfo->Energy[hitfitJet[i]] );
+                     if( gengluon_posi != -1 && gengluon_nega != -1 ) {
+                        HitFitInfo.JetGenJetType[i] = ( gluon.DeltaR( gen_lepgluon ) < gluon.DeltaR( gen_hadgluon ) ) ? hitfit::gluon1_label : hitfit::gluon2_label;
                      }
-                     if(gengluon_posi == -1 && gengluon_nega != -1) {if (gluon.DeltaR(gen_lepgluon) < 0.4) HitFitInfo.JetGenJetType[i] = hitfit::gluon1_label;}
-                     if(gengluon_posi != -1 && gengluon_nega == -1) {if (gluon.DeltaR(gen_hadgluon) < 0.4) HitFitInfo.JetGenJetType[i] = hitfit::gluon2_label;}
-                  }
-                  else {
+                     if( gengluon_posi == -1 && gengluon_nega != -1 ) {if ( gluon.DeltaR( gen_lepgluon ) < 0.4 ) { HitFitInfo.JetGenJetType[i] = hitfit::gluon1_label; }}
+                     if( gengluon_posi != -1 && gengluon_nega == -1 ) {if ( gluon.DeltaR( gen_hadgluon ) < 0.4 ) { HitFitInfo.JetGenJetType[i] = hitfit::gluon2_label; }}
+                  } else {
                      HitFitInfo.JetGenJetType[i]      = hitfit::isr_label;
                   }
-               } 
+               }
             }
 
-            HitFitInfo.JetGenJetPermutation[i]       = hitfit::jetTypeChar(HitFitInfo.JetGenJetType[i]);
+            HitFitInfo.JetGenJetPermutation[i]       = hitfit::jetTypeChar( HitFitInfo.JetGenJetType[i] );
 
          }
       }
 
-      for (size_t h = 0 ; h != HitFitInfo.nHitFit ; ++h) {
+      for ( size_t h = 0 ; h != HitFitInfo.nHitFit ; ++h ) {
 
-         for (size_t i = 0 ; i != HitFitInfo.nHitFitJet ; ++i) {
+         for ( size_t i = 0 ; i != HitFitInfo.nHitFitJet ; ++i ) {
 
             // Casting to (UInt_t) is necessary to avoid compilation warning.
-            HitFitInfo.JetType[h*HitFitInfo.nHitFitJet+i]           = (UInt_t) hitfitResult[h+jumpTo].ev().jet(i).type();
-            HitFitInfo.Permutation[h*HitFitInfo.nHitFitJet+i]       = hitfit::jetTypeChar(HitFitInfo.JetType[h*HitFitInfo.nHitFitJet+i]);
+            HitFitInfo.JetType[h * HitFitInfo.nHitFitJet + i]           = ( UInt_t ) hitfitResult[h + jumpTo].ev().jet( i ).type();
+            HitFitInfo.Permutation[h * HitFitInfo.nHitFitJet + i]       = hitfit::jetTypeChar( HitFitInfo.JetType[h * HitFitInfo.nHitFitJet + i] );
 
          }
 
          // first set the correct jet permutation flag to false
          HitFitInfo.CorrectPermutation[h]                 = false ;
 
-         if (isMC) {
+         if ( isMC ) {
 
             // Only check for MC event
 
             // loop over all jets to see if the parton-level jet type and assumed jet type in
             // the fit are identical
             // Count the number of correctPermutaion
-            for (size_t j = 0 ; j != HitFitInfo.nHitFitJet ; ++j) {
-               if (HitFitInfo.JetPartonType[j] == HitFitInfo.JetType[h*HitFitInfo.nHitFitJet+j]) {
+            for ( size_t j = 0 ; j != HitFitInfo.nHitFitJet ; ++j ) {
+               if ( HitFitInfo.JetPartonType[j] == HitFitInfo.JetType[h * HitFitInfo.nHitFitJet + j] ) {
                   ++HitFitInfo.NJetCorrectPermutation[h];
                }
             }
@@ -479,48 +477,47 @@ void doHitFit::fillHitFitInfo(HitFitInfoBranches& HitFitInfo)
          // If the number of correct jet in the permutation is equal to the
          // minimum number of jet put into HitFit, means that the permutation is correct.
 
-         if (HitFitInfo.NJetCorrectPermutation[h] == _MIN_HITFIT_JET[_fitType]) {
-            if (h % 2 == 0) {
+         if ( HitFitInfo.NJetCorrectPermutation[h] == _MIN_HITFIT_JET[_fitType] ) {
+            if ( h % 2 == 0 ) {
                HitFitInfo.CorrectPermutationIndex[0]    = h ;
-            }
-            else {
+            } else {
                HitFitInfo.CorrectPermutationIndex[1]    = h ;
             }
             HitFitInfo.CorrectPermutation[h]             = true ;
          }
 
-         HitFitInfo.hitfitNX           = (size_t) hitfitResult[h+jumpTo].pullx().num_row();
-         HitFitInfo.hitfitNY           = (size_t) hitfitResult[h+jumpTo].pully().num_row();
+         HitFitInfo.hitfitNX           = ( size_t ) hitfitResult[h + jumpTo].pullx().num_row();
+         HitFitInfo.hitfitNY           = ( size_t ) hitfitResult[h + jumpTo].pully().num_row();
 
-         HitFitInfo.Chi2[h] = hitfitResult[h+jumpTo].chisq();
-         if (HitFitInfo.Chi2[h] > 0.0) {
+         HitFitInfo.Chi2[h] = hitfitResult[h + jumpTo].chisq();
+         if ( HitFitInfo.Chi2[h] > 0.0 ) {
             HitFitInfo.Converge[h]                       = true ;
          } else {
             HitFitInfo.Converge[h]                       = false ;
          }
 
-         HitFitInfo.nHitFitXnX                                  = HitFitInfo.nHitFit*HitFitInfo.hitfitNX;
-         HitFitInfo.nHitFitXnY                                  = HitFitInfo.nHitFit*HitFitInfo.hitfitNY;
+         HitFitInfo.nHitFitXnX                                  = HitFitInfo.nHitFit * HitFitInfo.hitfitNX;
+         HitFitInfo.nHitFitXnY                                  = HitFitInfo.nHitFit * HitFitInfo.hitfitNY;
 
-         for (size_t i = 0 ; i != (size_t) hitfitResult[h+jumpTo].pullx().num_row() ; ++i) {
-            HitFitInfo.PullX[h*HitFitInfo.hitfitNX+i]               = hitfitResult[h+jumpTo].pullx()[i];
+         for ( size_t i = 0 ; i != ( size_t ) hitfitResult[h + jumpTo].pullx().num_row() ; ++i ) {
+            HitFitInfo.PullX[h * HitFitInfo.hitfitNX + i]               = hitfitResult[h + jumpTo].pullx()[i];
          }
 
-         for (size_t i = 0 ; i != (size_t) hitfitResult[h+jumpTo].pully().num_row() ; ++i) {
-            HitFitInfo.PullY[h*HitFitInfo.hitfitNY+i]               = hitfitResult[h+jumpTo].pully()[i];
+         for ( size_t i = 0 ; i != ( size_t ) hitfitResult[h + jumpTo].pully().num_row() ; ++i ) {
+            HitFitInfo.PullY[h * HitFitInfo.hitfitNY + i]               = hitfitResult[h + jumpTo].pully()[i];
          }
 
       }
 
-      for (size_t h = 0 ; h != HitFitInfo.nHitFit ; ++h) {
-         if (HitFitInfo.NJetCorrectPermutation[h] > HitFitInfo.MaxNJetCorrectPermutation) {
+      for ( size_t h = 0 ; h != HitFitInfo.nHitFit ; ++h ) {
+         if ( HitFitInfo.NJetCorrectPermutation[h] > HitFitInfo.MaxNJetCorrectPermutation ) {
             HitFitInfo.MaxNJetCorrectPermutation = HitFitInfo.NJetCorrectPermutation[h];
          }
       }
 
-      hitfit::Resolution leptonPRes                   = unfittedEvent.front().lep(0).res().p_res();
-      hitfit::Resolution leptonEtaRes                 = unfittedEvent.front().lep(0).res().eta_res();
-      hitfit::Resolution leptonPhiRes                 = unfittedEvent.front().lep(0).res().phi_res();
+      hitfit::Resolution leptonPRes                   = unfittedEvent.front().lep( 0 ).res().p_res();
+      hitfit::Resolution leptonEtaRes                 = unfittedEvent.front().lep( 0 ).res().eta_res();
+      hitfit::Resolution leptonPhiRes                 = unfittedEvent.front().lep( 0 ).res().phi_res();
 
       HitFitInfo.unfittedLeptonPResC                             = leptonPRes.C();
       HitFitInfo.unfittedLeptonPResR                             = leptonPRes.R();
@@ -537,44 +534,44 @@ void doHitFit::fillHitFitInfo(HitFitInfoBranches& HitFitInfo)
       HitFitInfo.unfittedLeptonPhiResN                           = leptonPhiRes.N();
       HitFitInfo.unfittedLeptonPhiResInverse                     = leptonPhiRes.inverse();
 
-      HitFitInfo.unfittedLeptonResPtFlag                         = unfittedEvent.front().lep(0).res().use_et();
+      HitFitInfo.unfittedLeptonResPtFlag                         = unfittedEvent.front().lep( 0 ).res().use_et();
 
-      for (size_t h = 0 ; h != HitFitInfo.nHitFit ; ++h) {
-         for (size_t j = 0 ; j != HitFitInfo.nHitFitJet ; ++j) {
+      for ( size_t h = 0 ; h != HitFitInfo.nHitFit ; ++h ) {
+         for ( size_t j = 0 ; j != HitFitInfo.nHitFitJet ; ++j ) {
 
-            math::XYZTLorentzVector unfittedJet(unfittedEvent[h+jumpTo].jet(j).p());
+            math::XYZTLorentzVector unfittedJet( unfittedEvent[h + jumpTo].jet( j ).p() );
 
-            HitFitInfo.unfittedJetMass[h*HitFitInfo.nHitFitJet+j]         = unfittedJet.mass();
-            HitFitInfo.unfittedJetE[h*HitFitInfo.nHitFitJet+j]            = unfittedJet.e();
-            HitFitInfo.unfittedJetP[h*HitFitInfo.nHitFitJet+j]            = unfittedJet.P();
-            HitFitInfo.unfittedJetPx[h*HitFitInfo.nHitFitJet+j]           = unfittedJet.px();
-            HitFitInfo.unfittedJetPy[h*HitFitInfo.nHitFitJet+j]           = unfittedJet.py();
-            HitFitInfo.unfittedJetPz[h*HitFitInfo.nHitFitJet+j]           = unfittedJet.pz();
-            HitFitInfo.unfittedJetPt[h*HitFitInfo.nHitFitJet+j]           = unfittedJet.pt();
-            HitFitInfo.unfittedJetEta[h*HitFitInfo.nHitFitJet+j]          = unfittedJet.eta();
-            HitFitInfo.unfittedJetTheta[h*HitFitInfo.nHitFitJet+j]        = unfittedJet.theta();
-            HitFitInfo.unfittedJetPhi[h*HitFitInfo.nHitFitJet+j]          = unfittedJet.phi();
+            HitFitInfo.unfittedJetMass[h * HitFitInfo.nHitFitJet + j]         = unfittedJet.mass();
+            HitFitInfo.unfittedJetE[h * HitFitInfo.nHitFitJet + j]            = unfittedJet.e();
+            HitFitInfo.unfittedJetP[h * HitFitInfo.nHitFitJet + j]            = unfittedJet.P();
+            HitFitInfo.unfittedJetPx[h * HitFitInfo.nHitFitJet + j]           = unfittedJet.px();
+            HitFitInfo.unfittedJetPy[h * HitFitInfo.nHitFitJet + j]           = unfittedJet.py();
+            HitFitInfo.unfittedJetPz[h * HitFitInfo.nHitFitJet + j]           = unfittedJet.pz();
+            HitFitInfo.unfittedJetPt[h * HitFitInfo.nHitFitJet + j]           = unfittedJet.pt();
+            HitFitInfo.unfittedJetEta[h * HitFitInfo.nHitFitJet + j]          = unfittedJet.eta();
+            HitFitInfo.unfittedJetTheta[h * HitFitInfo.nHitFitJet + j]        = unfittedJet.theta();
+            HitFitInfo.unfittedJetPhi[h * HitFitInfo.nHitFitJet + j]          = unfittedJet.phi();
 
-            hitfit::Resolution jetPRes              = unfittedEvent[h+jumpTo].jet(j).res().p_res();
-            hitfit::Resolution jetEtaRes            = unfittedEvent[h+jumpTo].jet(j).res().eta_res();
-            hitfit::Resolution jetPhiRes            = unfittedEvent[h+jumpTo].jet(j).res().phi_res();
+            hitfit::Resolution jetPRes              = unfittedEvent[h + jumpTo].jet( j ).res().p_res();
+            hitfit::Resolution jetEtaRes            = unfittedEvent[h + jumpTo].jet( j ).res().eta_res();
+            hitfit::Resolution jetPhiRes            = unfittedEvent[h + jumpTo].jet( j ).res().phi_res();
 
-            HitFitInfo.unfittedJetPResC[h*HitFitInfo.nHitFitJet+j]        = jetPRes.C();
-            HitFitInfo.unfittedJetPResR[h*HitFitInfo.nHitFitJet+j]        = jetPRes.R();
-            HitFitInfo.unfittedJetPResN[h*HitFitInfo.nHitFitJet+j]        = jetPRes.N();
-            HitFitInfo.unfittedJetPResInverse[h*HitFitInfo.nHitFitJet+j]  = jetPRes.inverse();
+            HitFitInfo.unfittedJetPResC[h * HitFitInfo.nHitFitJet + j]        = jetPRes.C();
+            HitFitInfo.unfittedJetPResR[h * HitFitInfo.nHitFitJet + j]        = jetPRes.R();
+            HitFitInfo.unfittedJetPResN[h * HitFitInfo.nHitFitJet + j]        = jetPRes.N();
+            HitFitInfo.unfittedJetPResInverse[h * HitFitInfo.nHitFitJet + j]  = jetPRes.inverse();
 
-            HitFitInfo.unfittedJetEtaResC[h*HitFitInfo.nHitFitJet+j]      = jetEtaRes.C();
-            HitFitInfo.unfittedJetEtaResR[h*HitFitInfo.nHitFitJet+j]      = jetEtaRes.R();
-            HitFitInfo.unfittedJetEtaResN[h*HitFitInfo.nHitFitJet+j]      = jetEtaRes.N();
-            HitFitInfo.unfittedJetEtaResInverse[h*HitFitInfo.nHitFitJet+j]= jetEtaRes.inverse();
+            HitFitInfo.unfittedJetEtaResC[h * HitFitInfo.nHitFitJet + j]      = jetEtaRes.C();
+            HitFitInfo.unfittedJetEtaResR[h * HitFitInfo.nHitFitJet + j]      = jetEtaRes.R();
+            HitFitInfo.unfittedJetEtaResN[h * HitFitInfo.nHitFitJet + j]      = jetEtaRes.N();
+            HitFitInfo.unfittedJetEtaResInverse[h * HitFitInfo.nHitFitJet + j] = jetEtaRes.inverse();
 
-            HitFitInfo.unfittedJetPhiResC[h*HitFitInfo.nHitFitJet+j]      = jetPhiRes.C();
-            HitFitInfo.unfittedJetPhiResR[h*HitFitInfo.nHitFitJet+j]      = jetPhiRes.R();
-            HitFitInfo.unfittedJetPhiResN[h*HitFitInfo.nHitFitJet+j]      = jetPhiRes.N();
-            HitFitInfo.unfittedJetPhiResInverse[h*HitFitInfo.nHitFitJet+j]= jetPhiRes.inverse();
+            HitFitInfo.unfittedJetPhiResC[h * HitFitInfo.nHitFitJet + j]      = jetPhiRes.C();
+            HitFitInfo.unfittedJetPhiResR[h * HitFitInfo.nHitFitJet + j]      = jetPhiRes.R();
+            HitFitInfo.unfittedJetPhiResN[h * HitFitInfo.nHitFitJet + j]      = jetPhiRes.N();
+            HitFitInfo.unfittedJetPhiResInverse[h * HitFitInfo.nHitFitJet + j] = jetPhiRes.inverse();
 
-            HitFitInfo.unfittedJetResPtFlag[h*HitFitInfo.nHitFitJet+j]    = unfittedEvent[h+jumpTo].jet(j).res().use_et();
+            HitFitInfo.unfittedJetResPtFlag[h * HitFitInfo.nHitFitJet + j]    = unfittedEvent[h + jumpTo].jet( j ).res().use_et();
 
             // Need to take the information from the original pat::Jet
             // unfittedJetIsBTagged
@@ -587,11 +584,11 @@ void doHitFit::fillHitFitInfo(HitFitInfoBranches& HitFitInfo)
       HitFitInfo.unfittedKtResN                                  = unfittedEvent.front().kt_res().N();
       HitFitInfo.unfittedKtResInverse                            = unfittedEvent.front().kt_res().inverse();
 
-      for (size_t h = 0 ; h != HitFitInfo.nHitFit ; ++h) {
+      for ( size_t h = 0 ; h != HitFitInfo.nHitFit ; ++h ) {
 
          // Copy the jet permutation from the fit results
 
-         hitfit::Lepjets_Event uEvent         = unfittedEvent[h+jumpTo];
+         hitfit::Lepjets_Event uEvent         = unfittedEvent[h + jumpTo];
 
          // Solve the neutrino pz for both real and complex solutions
          double re_nuz1          = 0.0 ;
@@ -600,26 +597,25 @@ void doHitFit::fillHitFitInfo(HitFitInfoBranches& HitFitInfo)
          double im_nuz2          = 0.0 ;
          bool real_nuz_sol       = false ;
 
-         if (HitFit->GetTopFit().args().solve_nu_tmass()) {
-         //if (HitFit->GetTopGluonFit().args().solve_nu_tmass()) {
-//          if((TOP==_fitType && HitFit->GetTopFit().args().solve_nu_tmass()) ||
-//             (TSTAR==_fitType && HitFit->GetTopGluonFit().args().solve_nu_tmass())) {
-            double hadtmass         = hitfit::Top_Decaykin::hadt(uEvent).m();
-            real_nuz_sol            = hitfit::Top_Decaykin::solve_nu_tmass(uEvent,
-                                                                           hadtmass,
-                                                                           re_nuz1,
-                                                                           im_nuz1,
-                                                                           re_nuz2,
-                                                                           im_nuz2);
-         }
-         else {
+         if ( HitFit->GetTopFit().args().solve_nu_tmass() ) {
+            //if (HitFit->GetTopGluonFit().args().solve_nu_tmass()) {
+            //          if((TOP==_fitType && HitFit->GetTopFit().args().solve_nu_tmass()) ||
+            //             (TSTAR==_fitType && HitFit->GetTopGluonFit().args().solve_nu_tmass())) {
+            double hadtmass         = hitfit::Top_Decaykin::hadt( uEvent ).m();
+            real_nuz_sol            = hitfit::Top_Decaykin::solve_nu_tmass( uEvent,
+                                      hadtmass,
+                                      re_nuz1,
+                                      im_nuz1,
+                                      re_nuz2,
+                                      im_nuz2 );
+         } else {
             double wmass            = LepWMass_;
-            real_nuz_sol            = hitfit::Top_Decaykin::solve_nu(uEvent,
-                                                                     wmass,
-                                                                     re_nuz1,
-                                                                     im_nuz1,
-                                                                     re_nuz2,
-                                                                     im_nuz2);
+            real_nuz_sol            = hitfit::Top_Decaykin::solve_nu( uEvent,
+                                      wmass,
+                                      re_nuz1,
+                                      im_nuz1,
+                                      re_nuz2,
+                                      im_nuz2 );
          }
 
          double re_nuz           = 0.0 ;
@@ -642,7 +638,7 @@ void doHitFit::fillHitFitInfo(HitFitInfoBranches& HitFitInfo)
          // Even index: for imaginary component in the lower-half of the complex plane.
          // Odd index : for imaginary component in the upper-half of the complex plane.
 
-         if (h % 2 == 0) {
+         if ( h % 2 == 0 ) {
             HitFitInfo.NeutrinoSol[h] = false ;
             re_nuz      = re_nuz1;
             im_nuz      = im_nuz1;
@@ -659,7 +655,7 @@ void doHitFit::fillHitFitInfo(HitFitInfoBranches& HitFitInfo)
          // The neutrino pz in the event is still zero, we set it to
          // the solution of neutrino_pz we have choose above.
 
-         uEvent.met().setZ(re_nuz);
+         uEvent.met().setZ( re_nuz );
 
          // We have calculate the solutions for neutrino pz and set the neutrino pz for
          // one of the two solution.  But we haven't adjust the neutrino energy yet, the
@@ -670,19 +666,19 @@ void doHitFit::fillHitFitInfo(HitFitInfoBranches& HitFitInfo)
          // sqrt(nu_px*nu_px + nu_py*nu_py + nu_pz*nu_pz), equivalently giving the neutrino
          // a mass of zero
 
-         hitfit::adjust_e_for_mass(uEvent.met(),0);
+         hitfit::adjust_e_for_mass( uEvent.met(), 0 );
 
          // Collect all the four-momenta
-         math::XYZTLorentzVector unfittedLepton      (uEvent.lep(0).p());
-         math::XYZTLorentzVector unfittedNeutrino    (uEvent.met());
-         math::XYZTLorentzVector unfittedLepW        (hitfit::Top_Decaykin::lepw(uEvent));
-         math::XYZTLorentzVector unfittedLepTop      (hitfit::Top_Decaykin::lept(uEvent));
-         math::XYZTLorentzVector unfittedHadW        (hitfit::Top_Decaykin::hadw(uEvent));
-         math::XYZTLorentzVector unfittedHadW1       (hitfit::Top_Decaykin::hadw1(uEvent));
-         math::XYZTLorentzVector unfittedHadW2       (hitfit::Top_Decaykin::hadw2(uEvent));
-         math::XYZTLorentzVector unfittedHadTop      (hitfit::Top_Decaykin::hadt(uEvent));
-         math::XYZTLorentzVector unfittedKt          (uEvent.kt());
-         math::XYZTLorentzVector unfittedTt          (unfittedLepTop + unfittedHadTop);
+         math::XYZTLorentzVector unfittedLepton      ( uEvent.lep( 0 ).p() );
+         math::XYZTLorentzVector unfittedNeutrino    ( uEvent.met() );
+         math::XYZTLorentzVector unfittedLepW        ( hitfit::Top_Decaykin::lepw( uEvent ) );
+         math::XYZTLorentzVector unfittedLepTop      ( hitfit::Top_Decaykin::lept( uEvent ) );
+         math::XYZTLorentzVector unfittedHadW        ( hitfit::Top_Decaykin::hadw( uEvent ) );
+         math::XYZTLorentzVector unfittedHadW1       ( hitfit::Top_Decaykin::hadw1( uEvent ) );
+         math::XYZTLorentzVector unfittedHadW2       ( hitfit::Top_Decaykin::hadw2( uEvent ) );
+         math::XYZTLorentzVector unfittedHadTop      ( hitfit::Top_Decaykin::hadt( uEvent ) );
+         math::XYZTLorentzVector unfittedKt          ( uEvent.kt() );
+         math::XYZTLorentzVector unfittedTt          ( unfittedLepTop + unfittedHadTop );
 
          HitFitInfo.unfittedNeutrinoE[h]                        = unfittedNeutrino.e();
          HitFitInfo.unfittedNeutrinoP[h]                        = unfittedNeutrino.P();
@@ -740,8 +736,8 @@ void doHitFit::fillHitFitInfo(HitFitInfoBranches& HitFitInfo)
          HitFitInfo.unfittedHadTopTheta[h]                      = unfittedHadTop.theta();
          HitFitInfo.unfittedHadTopPhi[h]                        = unfittedHadTop.phi();
 
-         HitFitInfo.unfittedTopMass[h]                          = hitfitResult[h+jumpTo].utmass();
-         HitFitInfo.unfittedTopMassSigma[h]                     = fabs(HitFitInfo.unfittedLepTopMass[h] - HitFitInfo.unfittedHadTopMass[h]) / 2.0 ;
+         HitFitInfo.unfittedTopMass[h]                          = hitfitResult[h + jumpTo].utmass();
+         HitFitInfo.unfittedTopMassSigma[h]                     = fabs( HitFitInfo.unfittedLepTopMass[h] - HitFitInfo.unfittedHadTopMass[h] ) / 2.0 ;
 
          HitFitInfo.unfittedKtMass[h]                           = unfittedKt.mass();
          HitFitInfo.unfittedKtE[h]                              = unfittedKt.e();
@@ -765,22 +761,22 @@ void doHitFit::fillHitFitInfo(HitFitInfoBranches& HitFitInfo)
          HitFitInfo.unfittedTtTheta[h]                          = unfittedTt.theta();
          HitFitInfo.unfittedTtPhi[h]                            = unfittedTt.phi();
 
-         math::XYZTLorentzVector fittedLepton        (hitfitResult[h+jumpTo].ev().lep(0).p());
-         math::XYZTLorentzVector fittedNeutrino      (hitfitResult[h+jumpTo].ev().met());
+         math::XYZTLorentzVector fittedLepton        ( hitfitResult[h + jumpTo].ev().lep( 0 ).p() );
+         math::XYZTLorentzVector fittedNeutrino      ( hitfitResult[h + jumpTo].ev().met() );
 
          std::vector<math::XYZTLorentzVector> fittedJet;
-         for (size_t j = 0 ; j!= HitFitInfo.nHitFitJet ; ++j) {
-            fittedJet.push_back(math::XYZTLorentzVector(hitfitResult[h+jumpTo].ev().jet(j).p()));
+         for ( size_t j = 0 ; j != HitFitInfo.nHitFitJet ; ++j ) {
+            fittedJet.push_back( math::XYZTLorentzVector( hitfitResult[h + jumpTo].ev().jet( j ).p() ) );
          }
 
-         math::XYZTLorentzVector fittedLepW          (hitfit::Top_Decaykin::lepw(hitfitResult[h+jumpTo].ev()));
-         math::XYZTLorentzVector fittedLepTop        (hitfit::Top_Decaykin::lept(hitfitResult[h+jumpTo].ev()));
-         math::XYZTLorentzVector fittedHadW          (hitfit::Top_Decaykin::hadw(hitfitResult[h+jumpTo].ev()));
-         math::XYZTLorentzVector fittedHadW1         (hitfit::Top_Decaykin::hadw1(hitfitResult[h+jumpTo].ev()));
-         math::XYZTLorentzVector fittedHadW2         (hitfit::Top_Decaykin::hadw2(hitfitResult[h+jumpTo].ev()));
-         math::XYZTLorentzVector fittedHadTop        (hitfit::Top_Decaykin::hadt(hitfitResult[h+jumpTo].ev()));
-         math::XYZTLorentzVector fittedKt            (hitfitResult[h+jumpTo].ev().kt());
-         math::XYZTLorentzVector fittedTt            (fittedLepTop + fittedHadTop);
+         math::XYZTLorentzVector fittedLepW          ( hitfit::Top_Decaykin::lepw( hitfitResult[h + jumpTo].ev() ) );
+         math::XYZTLorentzVector fittedLepTop        ( hitfit::Top_Decaykin::lept( hitfitResult[h + jumpTo].ev() ) );
+         math::XYZTLorentzVector fittedHadW          ( hitfit::Top_Decaykin::hadw( hitfitResult[h + jumpTo].ev() ) );
+         math::XYZTLorentzVector fittedHadW1         ( hitfit::Top_Decaykin::hadw1( hitfitResult[h + jumpTo].ev() ) );
+         math::XYZTLorentzVector fittedHadW2         ( hitfit::Top_Decaykin::hadw2( hitfitResult[h + jumpTo].ev() ) );
+         math::XYZTLorentzVector fittedHadTop        ( hitfit::Top_Decaykin::hadt( hitfitResult[h + jumpTo].ev() ) );
+         math::XYZTLorentzVector fittedKt            ( hitfitResult[h + jumpTo].ev().kt() );
+         math::XYZTLorentzVector fittedTt            ( fittedLepTop + fittedHadTop );
 
          HitFitInfo.fittedLeptonE[h]                            = fittedLepton.e();
          HitFitInfo.fittedLeptonP[h]                            = fittedLepton.P();
@@ -792,17 +788,17 @@ void doHitFit::fillHitFitInfo(HitFitInfoBranches& HitFitInfo)
          HitFitInfo.fittedLeptonTheta[h]                        = fittedLepton.theta();
          HitFitInfo.fittedLeptonPhi[h]                          = fittedLepton.phi();
 
-         for (size_t j = 0 ; j != HitFitInfo.nHitFitJet ; ++j) {
+         for ( size_t j = 0 ; j != HitFitInfo.nHitFitJet ; ++j ) {
 
-            HitFitInfo.fittedJetE[h*HitFitInfo.nHitFitJet+j]              = fittedJet[j].e();
-            HitFitInfo.fittedJetP[h*HitFitInfo.nHitFitJet+j]              = fittedJet[j].P();
-            HitFitInfo.fittedJetPx[h*HitFitInfo.nHitFitJet+j]             = fittedJet[j].px();
-            HitFitInfo.fittedJetPy[h*HitFitInfo.nHitFitJet+j]             = fittedJet[j].py();
-            HitFitInfo.fittedJetPz[h*HitFitInfo.nHitFitJet+j]             = fittedJet[j].pz();
-            HitFitInfo.fittedJetPt[h*HitFitInfo.nHitFitJet+j]             = fittedJet[j].pt();
-            HitFitInfo.fittedJetEta[h*HitFitInfo.nHitFitJet+j]            = fittedJet[j].eta();
-            HitFitInfo.fittedJetTheta[h*HitFitInfo.nHitFitJet+j]          = fittedJet[j].theta();
-            HitFitInfo.fittedJetPhi[h*HitFitInfo.nHitFitJet+j]            = fittedJet[j].phi();
+            HitFitInfo.fittedJetE[h * HitFitInfo.nHitFitJet + j]              = fittedJet[j].e();
+            HitFitInfo.fittedJetP[h * HitFitInfo.nHitFitJet + j]              = fittedJet[j].P();
+            HitFitInfo.fittedJetPx[h * HitFitInfo.nHitFitJet + j]             = fittedJet[j].px();
+            HitFitInfo.fittedJetPy[h * HitFitInfo.nHitFitJet + j]             = fittedJet[j].py();
+            HitFitInfo.fittedJetPz[h * HitFitInfo.nHitFitJet + j]             = fittedJet[j].pz();
+            HitFitInfo.fittedJetPt[h * HitFitInfo.nHitFitJet + j]             = fittedJet[j].pt();
+            HitFitInfo.fittedJetEta[h * HitFitInfo.nHitFitJet + j]            = fittedJet[j].eta();
+            HitFitInfo.fittedJetTheta[h * HitFitInfo.nHitFitJet + j]          = fittedJet[j].theta();
+            HitFitInfo.fittedJetPhi[h * HitFitInfo.nHitFitJet + j]            = fittedJet[j].phi();
 
          }
 
@@ -882,20 +878,20 @@ void doHitFit::fillHitFitInfo(HitFitInfoBranches& HitFitInfo)
          HitFitInfo.fittedTtTheta[h]                            = fittedTt.theta();
          HitFitInfo.fittedTtPhi[h]                              = fittedTt.phi();
 
-         if(TOP==_fitType) {
+         if( TOP == _fitType ) {
             HitFitInfo.fittedTopMass[h]                            = hitfitResult[h].mt();
             HitFitInfo.fittedTopMassSigma[h]                       = hitfitResult[h].sigmt();
          }
-         if(TSTAR==_fitType) {
-            HitFitInfo.fittedExcitedQuarkMass[h]                            = hitfitResult[h+jumpTo].mt();
-            HitFitInfo.fittedExcitedQuarkMassSigma[h]                       = hitfitResult[h+jumpTo].sigmt();
+         if( TSTAR == _fitType ) {
+            HitFitInfo.fittedExcitedQuarkMass[h]                            = hitfitResult[h + jumpTo].mt();
+            HitFitInfo.fittedExcitedQuarkMassSigma[h]                       = hitfitResult[h + jumpTo].sigmt();
          }
       } // for (size_t h = 0 ; h!= nHitFit_ ; ++h) {
 
 
-      for (size_t h = 0 ; h!= HitFitInfo.nHitFit ; ++h) {
+      for ( size_t h = 0 ; h != HitFitInfo.nHitFit ; ++h ) {
 
-         if (HitFitInfo.Converge[h]) {
+         if ( HitFitInfo.Converge[h] ) {
             ++HitFitInfo.nHitFitConverge;
          }
 
@@ -904,53 +900,53 @@ void doHitFit::fillHitFitInfo(HitFitInfoBranches& HitFitInfo)
       // if the number of converging fits is equal to the total number
       // of fit results, then all fits converge.
 
-      if (HitFitInfo.nHitFitConverge == HitFitInfo.nHitFit) {
+      if ( HitFitInfo.nHitFitConverge == HitFitInfo.nHitFit ) {
          HitFitInfo.AllConverge               = true;
       }
 
-      for (size_t h = 0 ; h!= HitFitInfo.nHitFit ; ++h) {
-         if (HitFitInfo.Chi2[h]  < minChi2 && HitFitInfo.Chi2[h]  > 0.0) {
+      for ( size_t h = 0 ; h != HitFitInfo.nHitFit ; ++h ) {
+         if ( HitFitInfo.Chi2[h]  < minChi2 && HitFitInfo.Chi2[h]  > 0.0 ) {
             minChi2                     = HitFitInfo.Chi2[h] ;
             HitFitInfo.MinChi2Index          = h ;
          }
-         if (HitFitInfo.Chi2[h]  >= maxChi2 && HitFitInfo.Chi2[h]  > 0.0) {
+         if ( HitFitInfo.Chi2[h]  >= maxChi2 && HitFitInfo.Chi2[h]  > 0.0 ) {
             maxChi2                     = HitFitInfo.Chi2[h]  ;
             HitFitInfo.MaxChi2Index          = h ;
          }
       }
 
-      if(debug_ && HitFitInfo.MinChi2Index!=-1) {
-         if(TOP==_fitType) std::cout<<"HitFitInfo.fittedTopMass[HitFitInfo.MinChi2Index] : "<<HitFitInfo.fittedTopMass[HitFitInfo.MinChi2Index]<<std::endl;
-         if(TSTAR==_fitType) std::cout<<"HitFitInfo.fittedExcitedQuarkMass[HitFitInfo.MinChi2Index] : "<<HitFitInfo.fittedExcitedQuarkMass[HitFitInfo.MinChi2Index]<<std::endl;
+      if( debug_ && HitFitInfo.MinChi2Index != -1 ) {
+         if( TOP == _fitType ) { std::cout << "HitFitInfo.fittedTopMass[HitFitInfo.MinChi2Index] : " << HitFitInfo.fittedTopMass[HitFitInfo.MinChi2Index] << std::endl; }
+         if( TSTAR == _fitType ) { std::cout << "HitFitInfo.fittedExcitedQuarkMass[HitFitInfo.MinChi2Index] : " << HitFitInfo.fittedExcitedQuarkMass[HitFitInfo.MinChi2Index] << std::endl; }
       }
 
-      if (HitFitInfo.nHitFit > 0) {
-         std::vector<std::pair <size_t,double> > hitfitIndexChi2;
-         for (size_t h = 0 ; h != HitFitInfo.nHitFit ; ++h) {
-            hitfitIndexChi2.push_back(std::pair<size_t,double>(h,HitFitInfo.Chi2[h]));
+      if ( HitFitInfo.nHitFit > 0 ) {
+         std::vector<std::pair <size_t, double>> hitfitIndexChi2;
+         for ( size_t h = 0 ; h != HitFitInfo.nHitFit ; ++h ) {
+            hitfitIndexChi2.push_back( std::pair<size_t, double>( h, HitFitInfo.Chi2[h] ) );
          }
 
-         std::stable_sort(hitfitIndexChi2.begin(),
-                          hitfitIndexChi2.end(),
-                          ::IndexedQuantityAbsLessThan<double>);
+         std::stable_sort( hitfitIndexChi2.begin(),
+                           hitfitIndexChi2.end(),
+                           ::IndexedQuantityAbsLessThan<double> );
 
-         for (size_t h = 0 ; h != HitFitInfo.nHitFit ; ++h) {
+         for ( size_t h = 0 ; h != HitFitInfo.nHitFit ; ++h ) {
             HitFitInfo.SortedChi2Index[h]    = hitfitIndexChi2[h].first;
          }
       }
 
-      for (size_t h = 0 ; h!= HitFitInfo.nHitFit ; ++h) {
-         if (HitFitInfo.Converge[h]) {
-            HitFitInfo.ExpHalfChi2[h]        =  exp(-0.5*HitFitInfo.Chi2[h]);
-            HitFitInfo.SumExpHalfChi2        += exp(-0.5*HitFitInfo.Chi2[h]);
+      for ( size_t h = 0 ; h != HitFitInfo.nHitFit ; ++h ) {
+         if ( HitFitInfo.Converge[h] ) {
+            HitFitInfo.ExpHalfChi2[h]        =  exp( -0.5 * HitFitInfo.Chi2[h] );
+            HitFitInfo.SumExpHalfChi2        += exp( -0.5 * HitFitInfo.Chi2[h] );
          } else {
             HitFitInfo.ExpHalfChi2[h]        =  0.0;
          }
       }
 
       // Chi2Probability
-      for (size_t h = 0 ; h!= HitFitInfo.nHitFit ; ++h) {
-         if (HitFitInfo.Converge[h]) {
+      for ( size_t h = 0 ; h != HitFitInfo.nHitFit ; ++h ) {
+         if ( HitFitInfo.Converge[h] ) {
             HitFitInfo.Chi2Probability[h]    =  HitFitInfo.ExpHalfChi2[h];
             HitFitInfo.SumChi2Probability    += HitFitInfo.ExpHalfChi2[h];
          } else {
@@ -960,23 +956,23 @@ void doHitFit::fillHitFitInfo(HitFitInfoBranches& HitFitInfo)
 
 
       // BTagProbability
-      for (size_t h = 0 ; h!= HitFitInfo.nHitFit ; ++h) {
+      for ( size_t h = 0 ; h != HitFitInfo.nHitFit ; ++h ) {
          // do nothing for now
       }
 
 
       // Chi2BTagProbability, so far only Chi2BTag
-      for (size_t h = 0 ; h!= HitFitInfo.nHitFit ; ++h) {
-         if (HitFitInfo.Converge[h]) {
-            HitFitInfo.Chi2Probability[h]    =  HitFitInfo.ExpHalfChi2[h]/HitFitInfo.SumExpHalfChi2;
+      for ( size_t h = 0 ; h != HitFitInfo.nHitFit ; ++h ) {
+         if ( HitFitInfo.Converge[h] ) {
+            HitFitInfo.Chi2Probability[h]    =  HitFitInfo.ExpHalfChi2[h] / HitFitInfo.SumExpHalfChi2;
             HitFitInfo.SumChi2Probability    += HitFitInfo.Chi2Probability[h];
          }
       }
 
       // Chi2 Weight
-      for (size_t h = 0 ; h!= HitFitInfo.nHitFit ; ++h) {
-         if (HitFitInfo.Converge[h]) {
-            HitFitInfo.Chi2Weight[h]         =  HitFitInfo.Chi2Probability[h]/HitFitInfo.SumChi2Probability;
+      for ( size_t h = 0 ; h != HitFitInfo.nHitFit ; ++h ) {
+         if ( HitFitInfo.Converge[h] ) {
+            HitFitInfo.Chi2Weight[h]         =  HitFitInfo.Chi2Probability[h] / HitFitInfo.SumChi2Probability;
          } else {
             HitFitInfo.Chi2Weight[h]         =  0.0;
          }
@@ -988,15 +984,15 @@ void doHitFit::fillHitFitInfo(HitFitInfoBranches& HitFitInfo)
 
       // so far only chi2
       // combination of Chi2 and BTag to be implemented
-      for (size_t h = 0 ; h!= HitFitInfo.nHitFit ; ++h) {
-         if (HitFitInfo.Converge[h]) {
+      for ( size_t h = 0 ; h != HitFitInfo.nHitFit ; ++h ) {
+         if ( HitFitInfo.Converge[h] ) {
             HitFitInfo.Weight[h]             =  HitFitInfo.Chi2Weight[h];
          } else {
             HitFitInfo.Weight[h]             =  0.0;
          }
       }
 
-      if(debug_) std::cout << " Done with fillHitFitInfo\n";
+      if( debug_ ) { std::cout << " Done with fillHitFitInfo\n"; }
       return ;
 
    }

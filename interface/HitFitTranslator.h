@@ -10,99 +10,100 @@ class LepInfoBranches;
 class JetInfoBranches;
 class EvtInfoBranches;
 
-namespace hitfit {
+namespace hitfit
+{
 
-  class LeptonTranslator {
+class LeptonTranslator {
 
-  public:
+public:
 
-    LeptonTranslator();
-    LeptonTranslator(const std::string& elfile,
-		     const std::string& mufile);
-    ~LeptonTranslator();
+   LeptonTranslator();
+   LeptonTranslator( const std::string& elfile,
+                     const std::string& mufile );
+   ~LeptonTranslator();
 
-    Lepjets_Event_Lep operator()(const LepInfoBranches& leptons,
-				 const int index,
-				 int type = hitfit::lepton_label,
-				 bool useObjEmbRes = false);
+   Lepjets_Event_Lep operator()( const LepInfoBranches& leptons,
+                                 const int index,
+                                 int type = hitfit::lepton_label,
+                                 bool useObjEmbRes = false );
 
-    const EtaDepResolution& electronResolution() const;
-    const EtaDepResolution& muonResolution() const;
+   const EtaDepResolution& electronResolution() const;
+   const EtaDepResolution& muonResolution() const;
 
-    bool CheckEta(const LepInfoBranches& leptons, const int index) const;
-
-
-  private:
-
-    EtaDepResolution electronResolution_;
-    EtaDepResolution muonResolution_;
-
-  }; //class LeptonTranslator
+   bool CheckEta( const LepInfoBranches& leptons, const int index ) const;
 
 
-  class JetTranslator {
+private:
 
-  public:
-     
-     JetTranslator();
-     JetTranslator(const std::string& udscFile,
-                   const std::string& udscFile2,
-                   const std::string& bFile);
-     JetTranslator(const std::string& udscFile,
-                   const std::string& udscFile2,
-                   const std::string& bFile,
-                   const std::string& jetCorrectionLevel,
-                   double jes,
-                   double jesB);
-     ~JetTranslator();
-     
-    Lepjets_Event_Jet operator()(const JetInfoBranches& jets,
-				 const int index,
-				 int type = hitfit::unknown_label,
-				 bool useObjEmbRes = false);
+   EtaDepResolution electronResolution_;
+   EtaDepResolution muonResolution_;
+
+}; //class LeptonTranslator
 
 
-    const EtaDepResolution& udscResolution() const;
-    const EtaDepResolution& udscResolution2() const;
-    const EtaDepResolution& bResolution() const;
+class JetTranslator {
 
-    bool CheckEta(const JetInfoBranches& jets, const int index) const;
+public:
+
+   JetTranslator();
+   JetTranslator( const std::string& udscFile,
+                  const std::string& udscFile2,
+                  const std::string& bFile );
+   JetTranslator( const std::string& udscFile,
+                  const std::string& udscFile2,
+                  const std::string& bFile,
+                  const std::string& jetCorrectionLevel,
+                  double jes,
+                  double jesB );
+   ~JetTranslator();
+
+   Lepjets_Event_Jet operator()( const JetInfoBranches& jets,
+                                 const int index,
+                                 int type = hitfit::unknown_label,
+                                 bool useObjEmbRes = false );
 
 
-  private:
+   const EtaDepResolution& udscResolution() const;
+   const EtaDepResolution& udscResolution2() const;
+   const EtaDepResolution& bResolution() const;
 
-    EtaDepResolution udscResolution_;
-    EtaDepResolution udscResolution2_;
-    EtaDepResolution bResolution_;
-
-    std::string jetCorrectionLevel_;
-    double jes_;
-    double jesB_;
-
-  }; //class JetTranslator
+   bool CheckEta( const JetInfoBranches& jets, const int index ) const;
 
 
-  class METTranslator {
+private:
 
-  public:
+   EtaDepResolution udscResolution_;
+   EtaDepResolution udscResolution2_;
+   EtaDepResolution bResolution_;
 
-    METTranslator();
-    METTranslator(const std::string& ifile);
-    ~METTranslator();
+   std::string jetCorrectionLevel_;
+   double jes_;
+   double jesB_;
 
-    Fourvec operator() (const EvtInfoBranches& evt,
-			bool useObjEmbRes = false);
+}; //class JetTranslator
 
-    Resolution KtResolution(const EvtInfoBranches& evt,
-			    bool useObjEmbRes = false) const;
-    Resolution METResolution(const EvtInfoBranches& evt,
-			     bool useObjEmbRes = false) const;
 
-  private:
+class METTranslator {
 
-    Resolution resolution_;
+public:
 
-  }; //class METTranslator
+   METTranslator();
+   METTranslator( const std::string& ifile );
+   ~METTranslator();
+
+   Fourvec operator() ( const EvtInfoBranches& evt,
+                        bool useObjEmbRes = false );
+
+   Resolution KtResolution( const EvtInfoBranches& evt,
+                            bool useObjEmbRes = false ) const;
+   Resolution METResolution( const EvtInfoBranches& evt,
+                             bool useObjEmbRes = false ) const;
+
+private:
+
+   Resolution resolution_;
+
+}; //class METTranslator
 
 } // namespace hitfit
 

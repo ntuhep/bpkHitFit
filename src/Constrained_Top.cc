@@ -48,7 +48,8 @@
 using std::ostream;
 
 
-namespace hitfit {
+namespace hitfit
+{
 
 
 //*************************************************************************
@@ -56,18 +57,18 @@ namespace hitfit {
 //
 
 
-Constrained_Top_Args::Constrained_Top_Args (const Defaults& defs)
+Constrained_Top_Args::Constrained_Top_Args ( const Defaults& defs )
 //
 // Purpose: Constructor.
 //
 // Inputs:
 //   defs -        The Defaults instance from which to initialize.
 //
-  : _bmass (defs.get_float ("bmass")),
-    _fourvec_constrainer_args (defs),
-    _equal_side(defs.get_bool("equal_side")),
-    _do_topgluon_flag (defs.get_bool ("do_topgluon_flag")),
-    _do_exoticdecay_flag (defs.get_bool ("do_exoticdecay_flag"))
+   : _bmass ( defs.get_float ( "bmass" ) ),
+     _fourvec_constrainer_args ( defs ),
+     _equal_side( defs.get_bool( "equal_side" ) ),
+     _do_topgluon_flag ( defs.get_bool ( "do_topgluon_flag" ) ),
+     _do_exoticdecay_flag ( defs.get_bool ( "do_exoticdecay_flag" ) )
 
 {
 }
@@ -79,7 +80,7 @@ double Constrained_Top_Args::bmass () const
 //          See the header for documentation.
 //
 {
-  return _bmass;
+   return _bmass;
 }
 
 
@@ -89,7 +90,7 @@ Constrained_Top_Args::fourvec_constrainer_args () const
 // Purpose: Return the contained subobject parameters.
 //
 {
-  return _fourvec_constrainer_args;
+   return _fourvec_constrainer_args;
 }
 
 
@@ -99,7 +100,7 @@ bool Constrained_Top_Args::equal_side () const
 //          See the header for documentation.
 //
 {
-  return _equal_side;
+   return _equal_side;
 }
 
 
@@ -109,7 +110,7 @@ bool Constrained_Top_Args::do_topgluon_flag () const
 //          See the header for documentation.
 //
 {
-  return _do_topgluon_flag;
+   return _do_topgluon_flag;
 }
 
 
@@ -119,17 +120,17 @@ bool Constrained_Top_Args::do_exoticdecay_flag () const
 //          See the header for documentation.
 //
 {
-  return _do_exoticdecay_flag;
+   return _do_exoticdecay_flag;
 }
 
 
 //*************************************************************************
 
 
-Constrained_Top::Constrained_Top (const Constrained_Top_Args& args,
-                                  double lepw_mass,
-                                  double hadw_mass,
-                                  double top_mass)
+Constrained_Top::Constrained_Top ( const Constrained_Top_Args& args,
+                                   double lepw_mass,
+                                   double hadw_mass,
+                                   double top_mass )
 //
 // Purpose: Constructor.
 //
@@ -142,63 +143,62 @@ Constrained_Top::Constrained_Top (const Constrained_Top_Args& args,
 //   top_mass -    The mass to which the top quarks should be constrained,
 //                 or 0 to skip this constraint.
 //
-  : _args (args),
-    _constrainer (args.fourvec_constrainer_args())
+   : _args ( args ),
+     _constrainer ( args.fourvec_constrainer_args() )
 {
-  char buf[256];
-  if (lepw_mass > 0) {
-    sprintf (buf, "(%d %d) = %f", nu_label, lepton_label, lepw_mass);
-    _constrainer.add_constraint (buf);
-  }
+   char buf[256];
+   if ( lepw_mass > 0 ) {
+      sprintf ( buf, "(%d %d) = %f", nu_label, lepton_label, lepw_mass );
+      _constrainer.add_constraint ( buf );
+   }
 
-  if (hadw_mass > 0) {
-    sprintf (buf, "(%d %d) = %f", hadw1_label, hadw2_label, hadw_mass);
-    _constrainer.add_constraint (buf);
-  }
+   if ( hadw_mass > 0 ) {
+      sprintf ( buf, "(%d %d) = %f", hadw1_label, hadw2_label, hadw_mass );
+      _constrainer.add_constraint ( buf );
+   }
 
-  if(args.do_topgluon_flag()) {
-     if (args.equal_side()) {
-        sprintf (buf, "(%d %d %d %d) = (%d %d %d %d)",
-                 nu_label, lepton_label, lepb_label, gluon1_label,
-                 hadw1_label, hadw2_label, hadb_label, gluon2_label);
-        _constrainer.add_constraint (buf);
-     }
-     if (top_mass > 0) {
-        sprintf (buf, "(%d %d %d) = %f",
-                 hadw1_label, hadw2_label, hadb_label, top_mass);
-        _constrainer.add_constraint (buf);
-        
-        sprintf (buf, "(%d %d %d) = %f",
-                 nu_label, lepton_label, lepb_label, top_mass);
-        _constrainer.add_constraint (buf);
-     }
-     
-     sprintf (buf, "(%d %d %d %d) = 0",
-              hadw1_label, hadw2_label, hadb_label, gluon2_label);
-     _constrainer.mass_constraint (buf);
-  }
-  else {
-     if (args.equal_side()) {
-        sprintf (buf, "(%d %d %d) = (%d %d %d)",
-                 nu_label, lepton_label, lepb_label,
-                 hadw1_label, hadw2_label, hadb_label);
-        _constrainer.add_constraint (buf);
-     }
+   if( args.do_topgluon_flag() ) {
+      if ( args.equal_side() ) {
+         sprintf ( buf, "(%d %d %d %d) = (%d %d %d %d)",
+                   nu_label, lepton_label, lepb_label, gluon1_label,
+                   hadw1_label, hadw2_label, hadb_label, gluon2_label );
+         _constrainer.add_constraint ( buf );
+      }
+      if ( top_mass > 0 ) {
+         sprintf ( buf, "(%d %d %d) = %f",
+                   hadw1_label, hadw2_label, hadb_label, top_mass );
+         _constrainer.add_constraint ( buf );
 
-     if (top_mass > 0) {
-        sprintf (buf, "(%d %d %d) = %f",
-                 hadw1_label, hadw2_label, hadb_label, top_mass);
-        _constrainer.add_constraint (buf);
-     }
-     else {
-        sprintf (buf, "(%d %d %d) = 0", hadw1_label, hadw2_label, hadb_label);
-        _constrainer.mass_constraint (buf);
-     }  
-  }
+         sprintf ( buf, "(%d %d %d) = %f",
+                   nu_label, lepton_label, lepb_label, top_mass );
+         _constrainer.add_constraint ( buf );
+      }
+
+      sprintf ( buf, "(%d %d %d %d) = 0",
+                hadw1_label, hadw2_label, hadb_label, gluon2_label );
+      _constrainer.mass_constraint ( buf );
+   } else {
+      if ( args.equal_side() ) {
+         sprintf ( buf, "(%d %d %d) = (%d %d %d)",
+                   nu_label, lepton_label, lepb_label,
+                   hadw1_label, hadw2_label, hadb_label );
+         _constrainer.add_constraint ( buf );
+      }
+
+      if ( top_mass > 0 ) {
+         sprintf ( buf, "(%d %d %d) = %f",
+                   hadw1_label, hadw2_label, hadb_label, top_mass );
+         _constrainer.add_constraint ( buf );
+      } else {
+         sprintf ( buf, "(%d %d %d) = 0", hadw1_label, hadw2_label, hadb_label );
+         _constrainer.mass_constraint ( buf );
+      }
+   }
 
 }
 
-namespace {
+namespace
+{
 
 
 /**
@@ -215,7 +215,7 @@ namespace {
     The constructed <i>FE_Obj</i>.
 
  */
-FE_Obj make_fe_obj (const Lepjets_Event_Lep& obj, double mass, int type)
+FE_Obj make_fe_obj ( const Lepjets_Event_Lep& obj, double mass, int type )
 //
 // Purpose: Helper to create an object to put into the Fourvec_Event.
 //
@@ -228,9 +228,9 @@ FE_Obj make_fe_obj (const Lepjets_Event_Lep& obj, double mass, int type)
 //   The constructed FE_Obj.
 //
 {
-  return FE_Obj (obj.p(), mass, type,
-                 obj.p_sigma(), obj.eta_sigma(), obj.phi_sigma(),
-                 obj.res().p_res().inverse());
+   return FE_Obj ( obj.p(), mass, type,
+                   obj.p_sigma(), obj.eta_sigma(), obj.phi_sigma(),
+                   obj.res().p_res().inverse() );
 }
 
 
@@ -252,7 +252,7 @@ FE_Obj make_fe_obj (const Lepjets_Event_Lep& obj, double mass, int type)
     - Fourvec_Event <i>fe</i>.
 
  */
-void do_import (const Lepjets_Event& ev, double bmass, Fourvec_Event& fe)
+void do_import ( const Lepjets_Event& ev, double bmass, Fourvec_Event& fe )
 //
 // Purpose: Convert from a Lepjets_Event to a Fourvec_Event.
 //
@@ -264,31 +264,30 @@ void do_import (const Lepjets_Event& ev, double bmass, Fourvec_Event& fe)
 //   fe -          The initialized Fourvec_Event.
 //
 {
-  assert (ev.nleps() == 1);
-  fe.add (make_fe_obj (ev.lep(0), 0, lepton_label));
+   assert ( ev.nleps() == 1 );
+   fe.add ( make_fe_obj ( ev.lep( 0 ), 0, lepton_label ) );
 
-  bool saw_lepb = false;
-  bool saw_hadb = false;
-  for (std::vector<Lepjets_Event_Jet>::size_type j=0; j < ev.njets(); j++) {
-    if (ev.jet(j).type() == isr_label || ev.jet(j).type() == higgs_label)
-      continue;
-    double mass = 0;
-    if (ev.jet(j).type() == lepb_label && !saw_lepb) {
-      mass = bmass;
-      saw_lepb = true;
-    }
-    else if (ev.jet(j).type() == hadb_label && !saw_hadb) {
-      mass = bmass;
-      saw_hadb = true;
-    }
-    fe.add (make_fe_obj (ev.jet(j), mass, ev.jet(j).type()));
-  }
+   bool saw_lepb = false;
+   bool saw_hadb = false;
+   for ( std::vector<Lepjets_Event_Jet>::size_type j = 0; j < ev.njets(); j++ ) {
+      if ( ev.jet( j ).type() == isr_label || ev.jet( j ).type() == higgs_label )
+      { continue; }
+      double mass = 0;
+      if ( ev.jet( j ).type() == lepb_label && !saw_lepb ) {
+         mass = bmass;
+         saw_lepb = true;
+      } else if ( ev.jet( j ).type() == hadb_label && !saw_hadb ) {
+         mass = bmass;
+         saw_hadb = true;
+      }
+      fe.add ( make_fe_obj ( ev.jet( j ), mass, ev.jet( j ).type() ) );
+   }
 
-  fe.set_nu_p (ev.met());
-  Fourvec kt = ev.kt ();
-  fe.set_kt_error (ev.kt_res().sigma (kt.x()),
-                   ev.kt_res().sigma (kt.y()),
-                   0);
+   fe.set_nu_p ( ev.met() );
+   Fourvec kt = ev.kt ();
+   fe.set_kt_error ( ev.kt_res().sigma ( kt.x() ),
+                     ev.kt_res().sigma ( kt.y() ),
+                     0 );
 }
 
 
@@ -308,7 +307,7 @@ void do_import (const Lepjets_Event& ev, double bmass, Fourvec_Event& fe)
     - Lepjets_Event <i>ev</i>
 
  */
-void do_export (const Fourvec_Event& fe, Lepjets_Event& ev)
+void do_export ( const Fourvec_Event& fe, Lepjets_Event& ev )
 //
 // Purpose: Convert from a Fourvec_Event to a Lepjets_Event.
 //
@@ -320,25 +319,25 @@ void do_export (const Fourvec_Event& fe, Lepjets_Event& ev)
 //   ev -          The updated Lepjets_Event.
 //
 {
-  ev.lep(0).p() = fe.obj(0).p;
-  for (std::vector<Lepjets_Event_Jet>::size_type j=0, k=1; j < ev.njets(); j++) {
-    if (ev.jet(j).type() == isr_label || ev.jet(j).type() == higgs_label)
-      continue;
-    ev.jet(j).p() = fe.obj(k++).p;
-  }
+   ev.lep( 0 ).p() = fe.obj( 0 ).p;
+   for ( std::vector<Lepjets_Event_Jet>::size_type j = 0, k = 1; j < ev.njets(); j++ ) {
+      if ( ev.jet( j ).type() == isr_label || ev.jet( j ).type() == higgs_label )
+      { continue; }
+      ev.jet( j ).p() = fe.obj( k++ ).p;
+   }
 
-  ev.met() = fe.nu();
+   ev.met() = fe.nu();
 }
 
 
 } // unnamed namespace
 
 
-double Constrained_Top::constrain (Lepjets_Event& ev,
-                                   double& mt,
-                                   double& sigmt,
-                                   Column_Vector& pullx,
-                                   Column_Vector& pully)
+double Constrained_Top::constrain ( Lepjets_Event& ev,
+                                    double& mt,
+                                    double& sigmt,
+                                    Column_Vector& pullx,
+                                    Column_Vector& pully )
 //
 // Purpose: Do a constrained fit for EV.  Returns the top mass and
 //          its error in MT and SIGMT, and the pull quantities in PULLX and
@@ -359,12 +358,12 @@ double Constrained_Top::constrain (Lepjets_Event& ev,
 //   The fit chisq, or < 0 if the fit didn't converge.
 //
 {
-  Fourvec_Event fe;
-  do_import (ev, _args.bmass (), fe);
-  double chisq = _constrainer.constrain (fe, mt, sigmt, pullx, pully);
-  do_export (fe, ev);
+   Fourvec_Event fe;
+   do_import ( ev, _args.bmass (), fe );
+   double chisq = _constrainer.constrain ( fe, mt, sigmt, pullx, pully );
+   do_export ( fe, ev );
 
-  return chisq;
+   return chisq;
 }
 
 
@@ -377,7 +376,7 @@ double Constrained_Top::constrain (Lepjets_Event& ev,
     @param ct The instance of Constrained_Top to be printed.
 
 */
-std::ostream& operator<< (std::ostream& s, const Constrained_Top& ct)
+std::ostream& operator<< ( std::ostream& s, const Constrained_Top& ct )
 //
 // Purpose: Print the object to S.
 //
@@ -389,7 +388,7 @@ std::ostream& operator<< (std::ostream& s, const Constrained_Top& ct)
 //   The stream S.
 //
 {
-  return s << ct._constrainer;
+   return s << ct._constrainer;
 }
 
 

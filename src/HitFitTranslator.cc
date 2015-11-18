@@ -4,321 +4,322 @@
 #include "MyAna/bpkHitFit/interface/HitFitTranslator.h"
 #include "MyAna/bprimeKit/interface/format.h"
 
-namespace hitfit {
+namespace hitfit
+{
 
-  // LeptonTranslator
-  LeptonTranslator::LeptonTranslator()
-  {
+// LeptonTranslator
+LeptonTranslator::LeptonTranslator()
+{
 
-    std::string CMSSW_BASE(getenv("CMSSW_BASE"));
-    std::string resolution_filename = CMSSW_BASE +
-      std::string("/src/TopQuarkAnalysis/TopHitFit/data/resolution/tqafElectronResolution.txt");
-    electronResolution_ = EtaDepResolution(resolution_filename);
-    resolution_filename = CMSSW_BASE +
-      std::string("/src/TopQuarkAnalysis/TopHitFit/data/resolution/tqafMuonResolution.txt");
-    muonResolution_ = EtaDepResolution(resolution_filename);
+   std::string CMSSW_BASE( getenv( "CMSSW_BASE" ) );
+   std::string resolution_filename = CMSSW_BASE +
+                                     std::string( "/src/TopQuarkAnalysis/TopHitFit/data/resolution/tqafElectronResolution.txt" );
+   electronResolution_ = EtaDepResolution( resolution_filename );
+   resolution_filename = CMSSW_BASE +
+                         std::string( "/src/TopQuarkAnalysis/TopHitFit/data/resolution/tqafMuonResolution.txt" );
+   muonResolution_ = EtaDepResolution( resolution_filename );
 
-  } // LeptonTranslator::LeptonTranslator()
+} // LeptonTranslator::LeptonTranslator()
 
 
-  LeptonTranslator::LeptonTranslator(const std::string& elfile, const std::string& mufile)
-  {
+LeptonTranslator::LeptonTranslator( const std::string& elfile, const std::string& mufile )
+{
 
-    std::string CMSSW_BASE(getenv("CMSSW_BASE"));
-    std::string resolution_filename;
+   std::string CMSSW_BASE( getenv( "CMSSW_BASE" ) );
+   std::string resolution_filename;
 
-    if (elfile.empty()) {
+   if ( elfile.empty() ) {
       resolution_filename = CMSSW_BASE +
-        std::string("/src/TopQuarkAnalysis/TopHitFit/data/resolution/tqafElectronResolution.txt");
-    } else {
+                            std::string( "/src/TopQuarkAnalysis/TopHitFit/data/resolution/tqafElectronResolution.txt" );
+   } else {
       resolution_filename = elfile ;
-    }
-    electronResolution_ = EtaDepResolution(resolution_filename);
+   }
+   electronResolution_ = EtaDepResolution( resolution_filename );
 
-    if (mufile.empty()) {
+   if ( mufile.empty() ) {
       resolution_filename = CMSSW_BASE +
-        std::string("/src/TopQuarkAnalysis/TopHitFit/data/resolution/tqafMuonResolution.txt");
-    } else {
+                            std::string( "/src/TopQuarkAnalysis/TopHitFit/data/resolution/tqafMuonResolution.txt" );
+   } else {
       resolution_filename = mufile ;
-    }
-    muonResolution_ = EtaDepResolution(resolution_filename);
+   }
+   muonResolution_ = EtaDepResolution( resolution_filename );
 
-  } // LeptonTranslator::LeptonTranslator(const std::string& elfile, const std::strin& mufile)
-
-
-  LeptonTranslator::~LeptonTranslator()
-  {
-  }
+} // LeptonTranslator::LeptonTranslator(const std::string& elfile, const std::strin& mufile)
 
 
-  Lepjets_Event_Lep
-  LeptonTranslator::operator()(const LepInfoBranches& leptons,
-			       const int index,
-			       int type /* = hitfit::lepton_label */,
-			       bool useObjEmbRes /* = false */)
-  {
-
-    Fourvec p(leptons.Px[index],leptons.Py[index],leptons.Pz[index],leptons.Energy[index]);
-
-    double            lepton_eta        = leptons.Eta[index];
-    Vector_Resolution lepton_resolution;
-    if(leptons.LeptonType[index]==11)
-      lepton_resolution = electronResolution_.GetResolution(lepton_eta);
-    else if(leptons.LeptonType[index]==13)
-      lepton_resolution = muonResolution_.GetResolution(lepton_eta);
-
-    Lepjets_Event_Lep lepton(p,
-			     lepton_label,
-			     lepton_resolution);
-    return lepton;
-
-  } // Lepjets_Event_Lep LeptonTranslator::operator()
+LeptonTranslator::~LeptonTranslator()
+{
+}
 
 
-  const EtaDepResolution&
-  LeptonTranslator::electronResolution() const
-  {
-    return electronResolution_;
-  }
+Lepjets_Event_Lep
+LeptonTranslator::operator()( const LepInfoBranches& leptons,
+                              const int index,
+                              int type /* = hitfit::lepton_label */,
+                              bool useObjEmbRes /* = false */ )
+{
 
-  const EtaDepResolution&
-  LeptonTranslator::muonResolution() const
-  {
-    return muonResolution_;
-  }
+   Fourvec p( leptons.Px[index], leptons.Py[index], leptons.Pz[index], leptons.Energy[index] );
 
-  bool
-  LeptonTranslator::CheckEta(const LepInfoBranches& leptons, const int index) const
-  {
-    if(leptons.LeptonType[index] == 11)
-      return electronResolution_.CheckEta(leptons.Eta[index]);
-    else if(leptons.LeptonType[index] == 13)
-      return muonResolution_.CheckEta(leptons.Eta[index]);
-    else
-      return false;
-  }
+   double            lepton_eta        = leptons.Eta[index];
+   Vector_Resolution lepton_resolution;
+   if( leptons.LeptonType[index] == 11 )
+   { lepton_resolution = electronResolution_.GetResolution( lepton_eta ); }
+   else if( leptons.LeptonType[index] == 13 )
+   { lepton_resolution = muonResolution_.GetResolution( lepton_eta ); }
 
-  // JetTranslator
-  JetTranslator::JetTranslator()
-  {
+   Lepjets_Event_Lep lepton( p,
+                             lepton_label,
+                             lepton_resolution );
+   return lepton;
 
-    std::string CMSSW_BASE(getenv("CMSSW_BASE"));
-    std::string resolution_filename = CMSSW_BASE +
-      std::string("/src/TopQuarkAnalysis/TopHitFit/data/resolution/tqafUdscJetResolution.txt");
-    udscResolution_ = EtaDepResolution(resolution_filename);
-    udscResolution2_ = EtaDepResolution(resolution_filename); //default to same as first resolution
-    resolution_filename = CMSSW_BASE +
-      std::string("/src/TopQuarkAnalysis/TopHitFit/data/resolution/tqafBJetResolution.txt");
-    bResolution_    = EtaDepResolution(resolution_filename);
-    jetCorrectionLevel_ = "L7Parton";
-    jes_  = 1.0;
-    jesB_ = 1.0;
-
-  } // JetTranslator::JetTranslator()
+} // Lepjets_Event_Lep LeptonTranslator::operator()
 
 
-   JetTranslator::JetTranslator(const std::string& udscFile,
-                                const std::string& udscFile2,
-                                const std::string& bFile)
-  {
+const EtaDepResolution&
+LeptonTranslator::electronResolution() const
+{
+   return electronResolution_;
+}
 
-    std::string CMSSW_BASE(getenv("CMSSW_BASE"));
-    std::string udscResolution_filename;
-    std::string udscResolution2_filename;
-    std::string bResolution_filename;
+const EtaDepResolution&
+LeptonTranslator::muonResolution() const
+{
+   return muonResolution_;
+}
 
-    if (udscFile.empty()) {
+bool
+LeptonTranslator::CheckEta( const LepInfoBranches& leptons, const int index ) const
+{
+   if( leptons.LeptonType[index] == 11 )
+   { return electronResolution_.CheckEta( leptons.Eta[index] ); }
+   else if( leptons.LeptonType[index] == 13 )
+   { return muonResolution_.CheckEta( leptons.Eta[index] ); }
+   else
+   { return false; }
+}
+
+// JetTranslator
+JetTranslator::JetTranslator()
+{
+
+   std::string CMSSW_BASE( getenv( "CMSSW_BASE" ) );
+   std::string resolution_filename = CMSSW_BASE +
+                                     std::string( "/src/TopQuarkAnalysis/TopHitFit/data/resolution/tqafUdscJetResolution.txt" );
+   udscResolution_ = EtaDepResolution( resolution_filename );
+   udscResolution2_ = EtaDepResolution( resolution_filename ); //default to same as first resolution
+   resolution_filename = CMSSW_BASE +
+                         std::string( "/src/TopQuarkAnalysis/TopHitFit/data/resolution/tqafBJetResolution.txt" );
+   bResolution_    = EtaDepResolution( resolution_filename );
+   jetCorrectionLevel_ = "L7Parton";
+   jes_  = 1.0;
+   jesB_ = 1.0;
+
+} // JetTranslator::JetTranslator()
+
+
+JetTranslator::JetTranslator( const std::string& udscFile,
+                              const std::string& udscFile2,
+                              const std::string& bFile )
+{
+
+   std::string CMSSW_BASE( getenv( "CMSSW_BASE" ) );
+   std::string udscResolution_filename;
+   std::string udscResolution2_filename;
+   std::string bResolution_filename;
+
+   if ( udscFile.empty() ) {
       udscResolution_filename = CMSSW_BASE +
-        std::string("/src/TopQuarkAnalysis/TopHitFit/data/resolution/tqafUdscJetResolution.txt");
-    } else {
+                                std::string( "/src/TopQuarkAnalysis/TopHitFit/data/resolution/tqafUdscJetResolution.txt" );
+   } else {
       udscResolution_filename = udscFile;
-    }
+   }
 
-    if (udscFile2.empty()) {
-       udscResolution2_filename = udscResolution_filename; //default to same as first resolution
-    } else {
+   if ( udscFile2.empty() ) {
+      udscResolution2_filename = udscResolution_filename; //default to same as first resolution
+   } else {
       udscResolution2_filename = udscFile2;
-    }
+   }
 
-    if (bFile.empty()) {
+   if ( bFile.empty() ) {
       bResolution_filename = CMSSW_BASE +
-        std::string("/src/TopQuarkAnalysis/TopHitFit/data/resolution/tqafBJetResolution.txt");
-    } else {
+                             std::string( "/src/TopQuarkAnalysis/TopHitFit/data/resolution/tqafBJetResolution.txt" );
+   } else {
       bResolution_filename = bFile;
-    }
+   }
 
-    udscResolution_ = EtaDepResolution(udscResolution_filename);
-    udscResolution2_ = EtaDepResolution(udscResolution2_filename);
-    bResolution_    = EtaDepResolution(bResolution_filename);
-    jetCorrectionLevel_ = "L7Parton";
-    jes_  = 1.0;
-    jesB_ = 1.0;
+   udscResolution_ = EtaDepResolution( udscResolution_filename );
+   udscResolution2_ = EtaDepResolution( udscResolution2_filename );
+   bResolution_    = EtaDepResolution( bResolution_filename );
+   jetCorrectionLevel_ = "L7Parton";
+   jes_  = 1.0;
+   jesB_ = 1.0;
 
-  } // JetTranslator::JetTranslator(const std::string& ifile)
+} // JetTranslator::JetTranslator(const std::string& ifile)
 
-  JetTranslator::JetTranslator(const std::string& udscFile,
-                               const std::string& udscFile2,
-                               const std::string& bFile,
-                               const std::string& jetCorrectionLevel,
-                               double jes,
-                               double jesB)
-  {
+JetTranslator::JetTranslator( const std::string& udscFile,
+                              const std::string& udscFile2,
+                              const std::string& bFile,
+                              const std::string& jetCorrectionLevel,
+                              double jes,
+                              double jesB )
+{
 
-    std::string CMSSW_BASE(getenv("CMSSW_BASE"));
-    std::string udscResolution_filename;
-    std::string udscResolution2_filename;
-    std::string bResolution_filename;
+   std::string CMSSW_BASE( getenv( "CMSSW_BASE" ) );
+   std::string udscResolution_filename;
+   std::string udscResolution2_filename;
+   std::string bResolution_filename;
 
-    if (udscFile.empty()) {
+   if ( udscFile.empty() ) {
       udscResolution_filename = CMSSW_BASE +
-        std::string("/src/TopQuarkAnalysis/TopHitFit/data/resolution/tqafUdscJetResolution.txt");
-    } else {
+                                std::string( "/src/TopQuarkAnalysis/TopHitFit/data/resolution/tqafUdscJetResolution.txt" );
+   } else {
       udscResolution_filename = udscFile;
-    }
+   }
 
-    if (udscFile2.empty()) {
-       udscResolution2_filename = udscResolution_filename; //default to same as first resolution
-    } else {
+   if ( udscFile2.empty() ) {
+      udscResolution2_filename = udscResolution_filename; //default to same as first resolution
+   } else {
       udscResolution2_filename = udscFile2;
-    }
+   }
 
-    if (bFile.empty()) {
+   if ( bFile.empty() ) {
       bResolution_filename = CMSSW_BASE +
-        std::string("/src/TopQuarkAnalysis/TopHitFit/data/resolution/tqafBJetResolution.txt");
-    } else {
+                             std::string( "/src/TopQuarkAnalysis/TopHitFit/data/resolution/tqafBJetResolution.txt" );
+   } else {
       bResolution_filename = bFile;
-    }
+   }
 
-    udscResolution_ = EtaDepResolution(udscResolution_filename);
-    udscResolution2_ = EtaDepResolution(udscResolution2_filename);
-    bResolution_    = EtaDepResolution(bResolution_filename);
-    jetCorrectionLevel_ = jetCorrectionLevel;
-    jes_  = jes;
-    jesB_ = jesB;
+   udscResolution_ = EtaDepResolution( udscResolution_filename );
+   udscResolution2_ = EtaDepResolution( udscResolution2_filename );
+   bResolution_    = EtaDepResolution( bResolution_filename );
+   jetCorrectionLevel_ = jetCorrectionLevel;
+   jes_  = jes;
+   jesB_ = jesB;
 
-  } // JetTranslator::JetTranslator(const std::string& ifile)
+} // JetTranslator::JetTranslator(const std::string& ifile)
 
-  JetTranslator::~JetTranslator()
-  {
-  } // JetTranslator::~JetTranslator()
+JetTranslator::~JetTranslator()
+{
+} // JetTranslator::~JetTranslator()
 
 
-  Lepjets_Event_Jet
-  JetTranslator::operator()(const JetInfoBranches& jets,
-			    const int index,
-			    int type /*= hitfit::unknown_label */,
-			    bool useObjEmbRes /* = false */)
-  {
+Lepjets_Event_Jet
+JetTranslator::operator()( const JetInfoBranches& jets,
+                           const int index,
+                           int type /*= hitfit::unknown_label */,
+                           bool useObjEmbRes /* = false */ )
+{
 
-    Fourvec p;
+   Fourvec p;
 
-    double            jet_eta        = jets.Eta[index];
+   double            jet_eta        = jets.Eta[index];
 
-    Vector_Resolution jet_resolution;
+   Vector_Resolution jet_resolution;
 
-    if (type == hitfit::hadb_label || type == hitfit::lepb_label || type == hitfit::higgs_label) {
-       jet_resolution = bResolution_.GetResolution(jet_eta);
+   if ( type == hitfit::hadb_label || type == hitfit::lepb_label || type == hitfit::higgs_label ) {
+      jet_resolution = bResolution_.GetResolution( jet_eta );
 
-       float scale = jesB_;
-       if(jets.Pt[index]>0.) {
-          if(jetCorrectionLevel_.find("L7")!=std::string::npos) scale*=jets.PtCorrL7b[index] / jets.Pt[index];
-          else if(jetCorrectionLevel_.find("L3")!=std::string::npos) scale*=jets.PtCorrL3[index] / jets.Pt[index];
-       }
-       
-       p = Fourvec(jets.Px[index]*scale,jets.Py[index]*scale,jets.Pz[index]*scale,jets.Energy[index]*scale);
-       
-    } else {
-       float splitLabel = jets.Unc[index];
-       if (splitLabel==(int)splitLabel && splitLabel>0)
-          jet_resolution = udscResolution2_.GetResolution(jet_eta);
-       else
-          jet_resolution = udscResolution_.GetResolution(jet_eta);
-       
-       float scale = jes_;
-       if(jets.Pt[index]>0.) {
-          if(jetCorrectionLevel_.find("L7")!=std::string::npos) scale*=jets.PtCorrL7uds[index] / jets.Pt[index];
-          else if(jetCorrectionLevel_.find("L3")!=std::string::npos) scale*=jets.PtCorrL3[index] / jets.Pt[index];
-       }
-       
-       p = Fourvec(jets.Px[index]*scale,jets.Py[index]*scale,jets.Pz[index]*scale,jets.Energy[index]*scale);
-    }
-    
-    Lepjets_Event_Jet retjet(p,
+      float scale = jesB_;
+      if( jets.Pt[index] > 0. ) {
+         if( jetCorrectionLevel_.find( "L7" ) != std::string::npos ) { scale *= jets.PtCorrL7b[index] / jets.Pt[index]; }
+         else if( jetCorrectionLevel_.find( "L3" ) != std::string::npos ) { scale *= jets.PtCorrL3[index] / jets.Pt[index]; }
+      }
+
+      p = Fourvec( jets.Px[index] * scale, jets.Py[index] * scale, jets.Pz[index] * scale, jets.Energy[index] * scale );
+
+   } else {
+      float splitLabel = jets.Unc[index];
+      if ( splitLabel == ( int )splitLabel && splitLabel > 0 )
+      { jet_resolution = udscResolution2_.GetResolution( jet_eta ); }
+      else
+      { jet_resolution = udscResolution_.GetResolution( jet_eta ); }
+
+      float scale = jes_;
+      if( jets.Pt[index] > 0. ) {
+         if( jetCorrectionLevel_.find( "L7" ) != std::string::npos ) { scale *= jets.PtCorrL7uds[index] / jets.Pt[index]; }
+         else if( jetCorrectionLevel_.find( "L3" ) != std::string::npos ) { scale *= jets.PtCorrL3[index] / jets.Pt[index]; }
+      }
+
+      p = Fourvec( jets.Px[index] * scale, jets.Py[index] * scale, jets.Pz[index] * scale, jets.Energy[index] * scale );
+   }
+
+   Lepjets_Event_Jet retjet( p,
                              type,
-                             jet_resolution);
-    return retjet;
+                             jet_resolution );
+   return retjet;
 
-  } // Lepjets_Event_Jet JetTranslator::operator()(const pat::Jet& j,int type)
-
-
-  const EtaDepResolution&
-  JetTranslator::udscResolution() const
-  {
-    return udscResolution_;
-  }
-
-  const EtaDepResolution&
-  JetTranslator::udscResolution2() const
-  {
-    return udscResolution2_;
-  }
-
-  const EtaDepResolution&
-  JetTranslator::bResolution() const
-  {
-    return bResolution_;
-  }
+} // Lepjets_Event_Jet JetTranslator::operator()(const pat::Jet& j,int type)
 
 
-  bool
-  JetTranslator::CheckEta(const JetInfoBranches& jets, const int index) const
-  {
-    double jet_eta = jets.Eta[index];
-    return bResolution_.CheckEta(jet_eta) && udscResolution_.CheckEta(jet_eta) && udscResolution2_.CheckEta(jet_eta);
-  }
+const EtaDepResolution&
+JetTranslator::udscResolution() const
+{
+   return udscResolution_;
+}
 
-  // METTranslator
-  METTranslator::METTranslator()
-  {
-    resolution_ = Resolution(std::string("0,0,12"));
-  } // METTranslator::METTranslator()
+const EtaDepResolution&
+JetTranslator::udscResolution2() const
+{
+   return udscResolution2_;
+}
 
-
-  METTranslator::METTranslator(const std::string& ifile)
-  {
-    const Defaults_Text defs(ifile);
-    std::string resolution_string(defs.get_string("met_resolution"));
-    resolution_ = Resolution(resolution_string);
-
-  } // METTranslator::METTranslator(const std::string& ifile)
+const EtaDepResolution&
+JetTranslator::bResolution() const
+{
+   return bResolution_;
+}
 
 
-  METTranslator::~METTranslator()
-  {
-  } // METTranslator::~METTranslator()
+bool
+JetTranslator::CheckEta( const JetInfoBranches& jets, const int index ) const
+{
+   double jet_eta = jets.Eta[index];
+   return bResolution_.CheckEta( jet_eta ) && udscResolution_.CheckEta( jet_eta ) && udscResolution2_.CheckEta( jet_eta );
+}
+
+// METTranslator
+METTranslator::METTranslator()
+{
+   resolution_ = Resolution( std::string( "0,0,12" ) );
+} // METTranslator::METTranslator()
 
 
-  Fourvec
-  METTranslator::operator()(const EvtInfoBranches& evt,
-			    bool useObjEmbRes /* = false */)
-  {
-    return Fourvec (evt.PFMETx,evt.PFMETy,0.0,evt.PFMET);
-  } // Fourvec METTranslator::operator()(const EvtInfoBranches& evt)
+METTranslator::METTranslator( const std::string& ifile )
+{
+   const Defaults_Text defs( ifile );
+   std::string resolution_string( defs.get_string( "met_resolution" ) );
+   resolution_ = Resolution( resolution_string );
+
+} // METTranslator::METTranslator(const std::string& ifile)
 
 
-  Resolution
-  METTranslator::KtResolution(const EvtInfoBranches& evt,
-			      bool useObjEmbRes /* = false */) const
-  {
-    return resolution_;
-  } // Resolution METTranslator::KtResolution(const EvtInfoBranches& evt)
+METTranslator::~METTranslator()
+{
+} // METTranslator::~METTranslator()
 
 
-  Resolution
-  METTranslator::METResolution(const EvtInfoBranches& evt,
-			       bool useObjEmbRes /* = false */) const
-  {
-    return KtResolution(evt,useObjEmbRes);
-  } // Resolution METTranslator::METResolution(const EvtInfoBranches& evt)
+Fourvec
+METTranslator::operator()( const EvtInfoBranches& evt,
+                           bool useObjEmbRes /* = false */ )
+{
+   return Fourvec ( evt.PFMETx, evt.PFMETy, 0.0, evt.PFMET );
+} // Fourvec METTranslator::operator()(const EvtInfoBranches& evt)
+
+
+Resolution
+METTranslator::KtResolution( const EvtInfoBranches& evt,
+                             bool useObjEmbRes /* = false */ ) const
+{
+   return resolution_;
+} // Resolution METTranslator::KtResolution(const EvtInfoBranches& evt)
+
+
+Resolution
+METTranslator::METResolution( const EvtInfoBranches& evt,
+                              bool useObjEmbRes /* = false */ ) const
+{
+   return KtResolution( evt, useObjEmbRes );
+} // Resolution METTranslator::METResolution(const EvtInfoBranches& evt)
 
 }

@@ -37,248 +37,249 @@
 // increase the number of permutations rapidly.
 //
 
-namespace hitfit{
+namespace hitfit
+{
 
-  bpkRunHitFit::bpkRunHitFit(const LeptonTranslator& lep,
-			     const JetTranslator&    jet,
-			     const METTranslator&    met,
-			     const std::string       default_file,
-			     double                  lepw_mass,
-			     double                  hadw_mass,
-			     double                  top_mass,
-                 int                     nu_sol,
-                 bool                    requireMatchedBtag):
-    _LeptonTranslator(lep),
-    _JetTranslator(jet),
-    _METTranslator(met),
-    _event(0,0),
-    _jetObjRes(false),
-    _Top_Fit(Top_Fit_Args(Defaults_Text(default_file)),lepw_mass,hadw_mass,top_mass),
-    //_TopGluon_Fit(TopGluon_Fit_Args(Defaults_Text(default_file)),lepw_mass,hadw_mass,top_mass),
-    _nu_solution(nu_sol),
-    _requireMatchedBtag(requireMatchedBtag)
-  {
-    if(_nu_solution<0 || _nu_solution>1) _nu_solution=2;
-  }
+bpkRunHitFit::bpkRunHitFit( const LeptonTranslator& lep,
+                            const JetTranslator&    jet,
+                            const METTranslator&    met,
+                            const std::string       default_file,
+                            double                  lepw_mass,
+                            double                  hadw_mass,
+                            double                  top_mass,
+                            int                     nu_sol,
+                            bool                    requireMatchedBtag ):
+   _LeptonTranslator( lep ),
+   _JetTranslator( jet ),
+   _METTranslator( met ),
+   _event( 0, 0 ),
+   _jetObjRes( false ),
+   _Top_Fit( Top_Fit_Args( Defaults_Text( default_file ) ), lepw_mass, hadw_mass, top_mass ),
+   //_TopGluon_Fit(TopGluon_Fit_Args(Defaults_Text(default_file)),lepw_mass,hadw_mass,top_mass),
+   _nu_solution( nu_sol ),
+   _requireMatchedBtag( requireMatchedBtag )
+{
+   if( _nu_solution < 0 || _nu_solution > 1 ) { _nu_solution = 2; }
+}
 
-  bpkRunHitFit::~bpkRunHitFit()
-  {
-  }
+bpkRunHitFit::~bpkRunHitFit()
+{
+}
 
-  void bpkRunHitFit::clear()
-  {
-    _event = Lepjets_Event(0,0);
-    _jets.clear();
-    _jetObjRes = false;
-    _Unfitted_Events.clear();
-    _Fit_Results.clear();
-  }
+void bpkRunHitFit::clear()
+{
+   _event = Lepjets_Event( 0, 0 );
+   _jets.clear();
+   _jetObjRes = false;
+   _Unfitted_Events.clear();
+   _Fit_Results.clear();
+}
 
-  void bpkRunHitFit::AddLepton(const LepInfoBranches& leptons,
-			       const int index,
-			       bool useObjRes)
-  {
-    _event.add_lep(_LeptonTranslator(leptons,index,lepton_label,useObjRes));
-    return;
-  }
+void bpkRunHitFit::AddLepton( const LepInfoBranches& leptons,
+                              const int index,
+                              bool useObjRes )
+{
+   _event.add_lep( _LeptonTranslator( leptons, index, lepton_label, useObjRes ) );
+   return;
+}
 
-  void bpkRunHitFit::AddJet(const int index,
-			    bool useObjRes)
-  {
-    // Only set flag when adding the first jet
-    // the additional jets then WILL be treated in the
-    // same way like the first jet.
-    if (_jets.empty()) {
+void bpkRunHitFit::AddJet( const int index,
+                           bool useObjRes )
+{
+   // Only set flag when adding the first jet
+   // the additional jets then WILL be treated in the
+   // same way like the first jet.
+   if ( _jets.empty() ) {
       _jetObjRes = useObjRes;
-    }
+   }
 
-    if (_jets.size() < MAX_HITFIT_JET) {
-      _jets.push_back(index);
-    }
-    return;
-  }
+   if ( _jets.size() < MAX_HITFIT_JET ) {
+      _jets.push_back( index );
+   }
+   return;
+}
 
-  void bpkRunHitFit::SetMet(const EvtInfoBranches& evt,
-			    bool useObjRes)
-  {
-    _event.met()    = _METTranslator(evt,useObjRes);
-    _event.kt_res() = _METTranslator.KtResolution(evt,useObjRes);
-    return;
-  }
+void bpkRunHitFit::SetMet( const EvtInfoBranches& evt,
+                           bool useObjRes )
+{
+   _event.met()    = _METTranslator( evt, useObjRes );
+   _event.kt_res() = _METTranslator.KtResolution( evt, useObjRes );
+   return;
+}
 
-  void bpkRunHitFit::SetKtResolution(const Resolution& res)
-  {
-    _event.kt_res() = res;
-    return;
-  }
+void bpkRunHitFit::SetKtResolution( const Resolution& res )
+{
+   _event.kt_res() = res;
+   return;
+}
 
-  void bpkRunHitFit::SetMETResolution(const Resolution& res)
-  {
-    SetKtResolution(res);
-    return;
-  }
+void bpkRunHitFit::SetMETResolution( const Resolution& res )
+{
+   SetKtResolution( res );
+   return;
+}
 
 //   const TopGluon_Fit& bpkRunHitFit::GetTopGluonFit() const
 //   {
 //     return _TopGluon_Fit;
 //   }
 
-   const Top_Fit& bpkRunHitFit::GetTopFit() const
-   {
-      return _Top_Fit;
-   }
+const Top_Fit& bpkRunHitFit::GetTopFit() const
+{
+   return _Top_Fit;
+}
 
-  std::vector<Fit_Result>::size_type bpkRunHitFit::FitAllPermutation(const JetInfoBranches& jet, std::vector<bool> jetisbtag)
-  {
-    if (_jets.size() < MIN_HITFIT_JET) {
+std::vector<Fit_Result>::size_type bpkRunHitFit::FitAllPermutation( const JetInfoBranches& jet, std::vector<bool> jetisbtag )
+{
+   if ( _jets.size() < MIN_HITFIT_JET ) {
       // For ttbar lepton+jets, a minimum of MIN_HITFIT_JETS jets
       // is required
       return 0;
-    }
+   }
 
-    if (_jets.size() > MAX_HITFIT_JET) {
+   if ( _jets.size() > MAX_HITFIT_JET ) {
       // Restrict the maximum number of jets in the fit
       // to prevent loop overflow
       return 0;
-    }
+   }
 
-    _Unfitted_Events.clear();
-    _Fit_Results.clear();
+   _Unfitted_Events.clear();
+   _Fit_Results.clear();
 
-    // Prepare the array of jet types for permutation
-    std::vector<int> jet_types (_jets.size(), unknown_label);
-    jet_types[0] = lepb_label;
-    jet_types[1] = hadb_label;
-    jet_types[2] = hadw1_label;
-    jet_types[3] = hadw1_label;
+   // Prepare the array of jet types for permutation
+   std::vector<int> jet_types ( _jets.size(), unknown_label );
+   jet_types[0] = lepb_label;
+   jet_types[1] = hadb_label;
+   jet_types[2] = hadw1_label;
+   jet_types[3] = hadw1_label;
 
-    if (_Top_Fit.args().constrainer_args().do_topgluon_flag() && _jets.size() >= MIN_HITFIT_TSTAR) {
-       jet_types[4] = gluon1_label;
-       jet_types[5] = gluon2_label;
-    }
+   if ( _Top_Fit.args().constrainer_args().do_topgluon_flag() && _jets.size() >= MIN_HITFIT_TSTAR ) {
+      jet_types[4] = gluon1_label;
+      jet_types[5] = gluon2_label;
+   }
 
-    if (_Top_Fit.args().do_higgs_flag() && _jets.size() >= MIN_HITFIT_TTH) {
+   if ( _Top_Fit.args().do_higgs_flag() && _jets.size() >= MIN_HITFIT_TTH ) {
       jet_types[4] = higgs_label;
       jet_types[5] = higgs_label;
-    }
+   }
 
-    std::stable_sort(jet_types.begin(),jet_types.end());
+   std::stable_sort( jet_types.begin(), jet_types.end() );
 
-    const int nustart = (_nu_solution==1) ? _nu_solution : 0;//
+   const int nustart = ( _nu_solution == 1 ) ? _nu_solution : 0; //
 
-    int Npermutation_ = 0;
-    int NpermutationB4Reduced_ = 0;
+   int Npermutation_ = 0;
+   int NpermutationB4Reduced_ = 0;
 
-    int Nbtag_jets = 0;
-    int jet_size_ = _jets.size();
-    if(_requireMatchedBtag) {
-       // Find out the max number of btagged jets
-       for(int i = 0; i < jet_size_; i ++){
-          if(jetisbtag[_jets[i]]) Nbtag_jets++;
-       }
-       std::cout << "Number of btag jets : " << Nbtag_jets << std::endl;
-    }
+   int Nbtag_jets = 0;
+   int jet_size_ = _jets.size();
+   if( _requireMatchedBtag ) {
+      // Find out the max number of btagged jets
+      for( int i = 0; i < jet_size_; i ++ ) {
+         if( jetisbtag[_jets[i]] ) { Nbtag_jets++; }
+      }
+      std::cout << "Number of btag jets : " << Nbtag_jets << std::endl;
+   }
 
-    do {
-       if(_requireMatchedBtag) std::cout << "perm " << Npermutation_ << " b4reduced " << NpermutationB4Reduced_ << std::endl;
+   do {
+      if( _requireMatchedBtag ) { std::cout << "perm " << Npermutation_ << " b4reduced " << NpermutationB4Reduced_ << std::endl; }
       NpermutationB4Reduced_++;
-      if(_requireMatchedBtag) {
+      if( _requireMatchedBtag ) {
          // require at least one bjet
          int Nbtag_ = 0;
-         for (int j = 0 ; j != jet_size_; j++) {
-            if(jet_types[j] == lepb_label || jet_types[j] == hadb_label){
-               if(jetisbtag[_jets[j]]){
+         for ( int j = 0 ; j != jet_size_; j++ ) {
+            if( jet_types[j] == lepb_label || jet_types[j] == hadb_label ) {
+               if( jetisbtag[_jets[j]] ) {
                   Nbtag_++;
                }
             }
          }
          std::cout << "Number of matched btags : " << Nbtag_ << std::endl;
-         if(Nbtag_ == 0) continue;//we're requiring a btag matched
+         if( Nbtag_ == 0 ) { continue; } //we're requiring a btag matched
          std::cout << "\tHave at least one btag matched\n";
-         if(Nbtag_jets > 1 && Nbtag_ < 2) continue;//if we've got more than one, make sure they're both matched.
+         if( Nbtag_jets > 1 && Nbtag_ < 2 ) { continue; } //if we've got more than one, make sure they're both matched.
          std::cout << "\tGot all btags matched\n";
       }
 
       Npermutation_++;
       // begin loop over all jet permutation
-      for (int nusol = nustart ; nusol != 2 ; nusol++) {
-    if(nusol > _nu_solution) break;
-	// loop over two neutrino solution
-	bool nuz = bool(nusol);
+      for ( int nusol = nustart ; nusol != 2 ; nusol++ ) {
+         if( nusol > _nu_solution ) { break; }
+         // loop over two neutrino solution
+         bool nuz = bool( nusol );
 
-	// Copy the event
-	Lepjets_Event fev = _event;
+         // Copy the event
+         Lepjets_Event fev = _event;
 
-	// Add jets into the event, with the assumed type
-	// in accord with the permutation.
-	// The translator _JetTranslator will correctly
-	// return object of Lepjets_Event_Jet with
-	// jet energy correction applied in accord with
-	// the assumed jet type (b or light).
-	for (size_t j = 0 ; j != _jets.size(); j++) {
-	  fev.add_jet(_JetTranslator(jet,_jets[j],jet_types[j],_jetObjRes));
-	}
+         // Add jets into the event, with the assumed type
+         // in accord with the permutation.
+         // The translator _JetTranslator will correctly
+         // return object of Lepjets_Event_Jet with
+         // jet energy correction applied in accord with
+         // the assumed jet type (b or light).
+         for ( size_t j = 0 ; j != _jets.size(); j++ ) {
+            fev.add_jet( _JetTranslator( jet, _jets[j], jet_types[j], _jetObjRes ) );
+         }
 
-	// Clone fev (intended to be fitted event)
-	// to ufev (intended to be unfitted event)
-	Lepjets_Event ufev = fev;
+         // Clone fev (intended to be fitted event)
+         // to ufev (intended to be unfitted event)
+         Lepjets_Event ufev = fev;
 
-	// Set jet types.
-	fev.set_jet_types(jet_types);
-	ufev.set_jet_types(jet_types);
+         // Set jet types.
+         fev.set_jet_types( jet_types );
+         ufev.set_jet_types( jet_types );
 
-	// Store the unfitted event
-	_Unfitted_Events.push_back(ufev);
+         // Store the unfitted event
+         _Unfitted_Events.push_back( ufev );
 
-	// Prepare the placeholder for various kinematic quantities
-	double umwhad;
-	double utmass;
-	double mt;
-	double sigmt;
-	Column_Vector pullx;
-	Column_Vector pully;
+         // Prepare the placeholder for various kinematic quantities
+         double umwhad;
+         double utmass;
+         double mt;
+         double sigmt;
+         Column_Vector pullx;
+         Column_Vector pully;
 
-	// Do the fit
-	//double chisq= _TopGluon_Fit.fit_one_perm(fev,
-	double chisq= _Top_Fit.fit_one_perm(fev,
-					    nuz,
-					    umwhad,
-					    utmass,
-					    mt,
-					    sigmt,
-					    pullx,
-					    pully);
+         // Do the fit
+         //double chisq= _TopGluon_Fit.fit_one_perm(fev,
+         double chisq = _Top_Fit.fit_one_perm( fev,
+                                               nuz,
+                                               umwhad,
+                                               utmass,
+                                               mt,
+                                               sigmt,
+                                               pullx,
+                                               pully );
 
-	//std::cout<<"mt "<<mt<<" utmass "<<utmass<<std::endl;
-	// Store output of the fit
-	_Fit_Results.push_back(Fit_Result(chisq,
-					  fev,
-					  pullx,
-					  pully,
-					  umwhad,
-					  utmass,
-					  mt,
-					  sigmt));
+         //std::cout<<"mt "<<mt<<" utmass "<<utmass<<std::endl;
+         // Store output of the fit
+         _Fit_Results.push_back( Fit_Result( chisq,
+                                             fev,
+                                             pullx,
+                                             pully,
+                                             umwhad,
+                                             utmass,
+                                             mt,
+                                             sigmt ) );
 
       } // end loop over two neutrino solution
 
-    } while (std::next_permutation (jet_types.begin(), jet_types.end()));
-    // end loop over all jet permutations
+   } while ( std::next_permutation ( jet_types.begin(), jet_types.end() ) );
+   // end loop over all jet permutations
 
-    //std::cout<<"reduced permutations (b4)  : "<<Npermutation_<<" ( "<<NpermutationB4Reduced_<<" ) ; _jets.size() : "<<_jets.size() <<std::endl;
+   //std::cout<<"reduced permutations (b4)  : "<<Npermutation_<<" ( "<<NpermutationB4Reduced_<<" ) ; _jets.size() : "<<_jets.size() <<std::endl;
 
-    return _Fit_Results.size();
+   return _Fit_Results.size();
 
-  }
+}
 
-  std::vector<Lepjets_Event> bpkRunHitFit::GetUnfittedEvent()
-  {
-    return _Unfitted_Events;
-  }
+std::vector<Lepjets_Event> bpkRunHitFit::GetUnfittedEvent()
+{
+   return _Unfitted_Events;
+}
 
-  std::vector<Fit_Result> bpkRunHitFit::GetFitAllPermutation()
-  {
-    return _Fit_Results;
-  }
+std::vector<Fit_Result> bpkRunHitFit::GetFitAllPermutation()
+{
+   return _Fit_Results;
+}
 
 } // namespace hitfit

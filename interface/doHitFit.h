@@ -14,117 +14,117 @@ class GenInfoBranches;
 
 class doHitFit {
 
- public:
+public:
 
-  doHitFit(const edm::ParameterSet&,
-	      const EvtInfoBranches &evt, const LepInfoBranches &lep,
-	      const JetInfoBranches &jets, const GenInfoBranches &gens);
+   doHitFit( const edm::ParameterSet&,
+             const EvtInfoBranches& evt, const LepInfoBranches& lep,
+             const JetInfoBranches& jets, const GenInfoBranches& gens );
 
-  ~doHitFit();
+   ~doHitFit();
 
-  bool runHitFit(const int lepIdx, const std::vector<int> jetsIdx, std::vector<bool> jetisbtag);
-  void fillHitFitInfo(HitFitInfoBranches& HitFitInfo);
+   bool runHitFit( const int lepIdx, const std::vector<int> jetsIdx, std::vector<bool> jetisbtag );
+   void fillHitFitInfo( HitFitInfoBranches& HitFitInfo );
 
-      enum FitType{
-         TOP,//SM top (also t'->Wb)
-         TSTAR,//excited quark t*->tg->Wbg
-         nFitTypes
-      };
-      static const unsigned _MIN_HITFIT_JET[];
+   enum FitType {
+      TOP,//SM top (also t'->Wb)
+      TSTAR,//excited quark t*->tg->Wbg
+      nFitTypes
+   };
+   static const unsigned _MIN_HITFIT_JET[];
 
- private:
+private:
 
-  const EvtInfoBranches* EvtInfo;
-  const LepInfoBranches* LepInfo;
-  int _lepIdx;
-  const JetInfoBranches* JetInfo;
-  const GenInfoBranches* GenInfo;
-  std::vector<int> _jetsIdx;
+   const EvtInfoBranches* EvtInfo;
+   const LepInfoBranches* LepInfo;
+   int _lepIdx;
+   const JetInfoBranches* JetInfo;
+   const GenInfoBranches* GenInfo;
+   std::vector<int> _jetsIdx;
 
-  std::vector<int> hitfitJet;
+   std::vector<int> hitfitJet;
 
-  bool _ranHitFit;
-  bool isMC;
+   bool _ranHitFit;
+   bool isMC;
 
-  unsigned int _nHitFit;
-  unsigned int _nHitFitJet;
+   unsigned int _nHitFit;
+   unsigned int _nHitFitJet;
 
-      const int _fitType;//type of fit to do
-      const bool _onlyBest;//save only best result 
+   const int _fitType;//type of fit to do
+   const bool _onlyBest;//save only best result
 
-  bool debug_;
+   bool debug_;
 
-    //Path of text file containing the default settings to HitFit.
-    edm::FileInPath Default_;
+   //Path of text file containing the default settings to HitFit.
+   edm::FileInPath Default_;
 
-    //Path of text file containing the electron resolution.
-    edm::FileInPath ElectronResolution_;
+   //Path of text file containing the electron resolution.
+   edm::FileInPath ElectronResolution_;
 
-    //If TRUE, use the resolution embedded in the electron physics object and NOT the resolution in the file hitfitElectronResolution_.
-    //If FALSE, use the resolution in the file hitfitElectronResolution_.
-    bool        ElectronObjRes_;
+   //If TRUE, use the resolution embedded in the electron physics object and NOT the resolution in the file hitfitElectronResolution_.
+   //If FALSE, use the resolution in the file hitfitElectronResolution_.
+   bool        ElectronObjRes_;
 
-    //Path of text file containing the muon resolution.
-    edm::FileInPath MuonResolution_;
+   //Path of text file containing the muon resolution.
+   edm::FileInPath MuonResolution_;
 
-    //If TRUE, use the resolution embedded in the muon physics object and NOT the resolution in the file hitfitMuonResolution_.
-    //If FALSE, use the resolution in the file hitfitMuonResolution_.
-    bool        MuonObjRes_;
+   //If TRUE, use the resolution embedded in the muon physics object and NOT the resolution in the file hitfitMuonResolution_.
+   //If FALSE, use the resolution in the file hitfitMuonResolution_.
+   bool        MuonObjRes_;
 
-    //Path of text file containing the udsc jet resolution.
-    edm::FileInPath UdscJetResolution_;
+   //Path of text file containing the udsc jet resolution.
+   edm::FileInPath UdscJetResolution_;
    edm::FileInPath UdscJetResolution2_; //second resolution for split jets
 
-    //Path of text file containing the b jet resolution.
-    edm::FileInPath BJetResolution_;
+   //Path of text file containing the b jet resolution.
+   edm::FileInPath BJetResolution_;
 
-    //If TRUE, use the resolution embedded in the jet physics object and NOT the resolution in the file hitfitUdscJetResolution_ and hitfitBJetResolution_.
-    //If FALSE, use the resolution in the hitfitUdscJetResolution_ and hitfitBJetResolution_.
-    bool        JetObjRes_;
+   //If TRUE, use the resolution embedded in the jet physics object and NOT the resolution in the file hitfitUdscJetResolution_ and hitfitBJetResolution_.
+   //If FALSE, use the resolution in the hitfitUdscJetResolution_ and hitfitBJetResolution_.
+   bool        JetObjRes_;
 
-    //level to correct jets to in HitFit
-    std::string JetCorrectionLevel_;
+   //level to correct jets to in HitFit
+   std::string JetCorrectionLevel_;
 
-    //factor to scale jets by in HitFit
-    double      UdscJES_;
-    double      BJES_;
+   //factor to scale jets by in HitFit
+   double      UdscJES_;
+   double      BJES_;
 
-    //Path of text file containing the missing transverse energy resolution.
-    edm::FileInPath METResolution_;
+   //Path of text file containing the missing transverse energy resolution.
+   edm::FileInPath METResolution_;
 
-    //If TRUE, use the resolution embedded in the MET physics object and NOT the resolution in the file hitfitMETResolution_.
-    //If FALSE, use the resolution in the file hitfitMETResolution_.
-    bool        METObjRes_;
+   //If TRUE, use the resolution embedded in the MET physics object and NOT the resolution in the file hitfitMETResolution_.
+   //If FALSE, use the resolution in the file hitfitMETResolution_.
+   bool        METObjRes_;
 
-    //The values to which HitFit must constrain the leptonic/hadronic W boson mass, in units of GeV.
-    double      LepWMass_;
-    double      HadWMass_;
+   //The values to which HitFit must constrain the leptonic/hadronic W boson mass, in units of GeV.
+   double      LepWMass_;
+   double      HadWMass_;
 
-    //The value to which HitFit must constrain the top quark mass, in units of GeV. 0.0 is unconstrained.
-    double      TopMass_;
+   //The value to which HitFit must constrain the top quark mass, in units of GeV. 0.0 is unconstrained.
+   double      TopMass_;
 
-    //Select which neutrino solution to use 0=smaller pz, 1=larger pz, otherwise use both
-    int nuSolution_;
+   //Select which neutrino solution to use 0=smaller pz, 1=larger pz, otherwise use both
+   int nuSolution_;
 
-      bool requireMatchedBtag_;
+   bool requireMatchedBtag_;
 
-    hitfit::LeptonTranslator LeptonTranslator_;
-    hitfit::JetTranslator    JetTranslator_;
-    hitfit::METTranslator    METTranslator_;
+   hitfit::LeptonTranslator LeptonTranslator_;
+   hitfit::JetTranslator    JetTranslator_;
+   hitfit::METTranslator    METTranslator_;
 
-    hitfit::bpkRunHitFit* HitFit;
+   hitfit::bpkRunHitFit* HitFit;
 
-    double      MinLeptonPt_;
-    double      MinJetPt_;
-    double      MinMET_;
+   double      MinLeptonPt_;
+   double      MinJetPt_;
+   double      MinMET_;
 
-    //	    The maximum number of of jets used in HitFit.
+   //       The maximum number of of jets used in HitFit.
    unsigned    MaxNJet_;
 
-    /**
-        NOT READY: If TRUE, make HitFit prefer bjets.
-     */
-    bool        PreferBJet_;
+   /**
+       NOT READY: If TRUE, make HitFit prefer bjets.
+    */
+   bool        PreferBJet_;
 };
 
 #endif //doHitFit_h

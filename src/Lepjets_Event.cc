@@ -47,10 +47,11 @@ using std::remove_if;
 using std::abs;
 
 
-namespace hitfit {
+namespace hitfit
+{
 
 
-Lepjets_Event::Lepjets_Event (int runnum, int evnum)
+Lepjets_Event::Lepjets_Event ( int runnum, int evnum )
 //
 // Purpose: Constructor.
 //
@@ -58,12 +59,12 @@ Lepjets_Event::Lepjets_Event (int runnum, int evnum)
 //   runnum -      The run number.
 //   evnum -       The event number.
 //
-  : _zvertex (0),
-    _isMC(false),
-    _runnum (runnum),
-    _evnum (evnum),
-    _dlb (-1),
-    _dnn (-1)
+   : _zvertex ( 0 ),
+     _isMC( false ),
+     _runnum ( runnum ),
+     _evnum ( evnum ),
+     _dlb ( -1 ),
+     _dnn ( -1 )
 {
 }
 
@@ -76,7 +77,7 @@ const int& Lepjets_Event::runnum () const
 //   The run number.
 //
 {
-  return _runnum;
+   return _runnum;
 }
 
 
@@ -88,7 +89,7 @@ int& Lepjets_Event::runnum ()
 //   The run number.
 //
 {
-  return _runnum;
+   return _runnum;
 }
 
 
@@ -100,7 +101,7 @@ const int& Lepjets_Event::evnum () const
 //   The event number.
 //
 {
-  return _evnum;
+   return _evnum;
 }
 
 
@@ -112,7 +113,7 @@ int& Lepjets_Event::evnum ()
 //   The event number.
 //
 {
-  return _evnum;
+   return _evnum;
 }
 
 
@@ -124,7 +125,7 @@ std::vector<Lepjets_Event_Lep>::size_type Lepjets_Event::nleps () const
 //   The length of the lepton list.
 //
 {
-  return _leps.size ();
+   return _leps.size ();
 }
 
 
@@ -136,11 +137,11 @@ std::vector<Lepjets_Event_Jet>::size_type Lepjets_Event::njets () const
 //   The length of the jet list.
 //
 {
-  return _jets.size ();
+   return _jets.size ();
 }
 
 
-Lepjets_Event_Lep& Lepjets_Event::lep (std::vector<Lepjets_Event_Lep>::size_type  i)
+Lepjets_Event_Lep& Lepjets_Event::lep ( std::vector<Lepjets_Event_Lep>::size_type  i )
 //
 // Purpose: Return the Ith lepton.
 //
@@ -151,12 +152,12 @@ Lepjets_Event_Lep& Lepjets_Event::lep (std::vector<Lepjets_Event_Lep>::size_type
 //   The Ith lepton.
 //
 {
-  assert (i < _leps.size());
-  return _leps[i];
+   assert ( i < _leps.size() );
+   return _leps[i];
 }
 
 
-Lepjets_Event_Jet& Lepjets_Event::jet (std::vector<Lepjets_Event_Jet>::size_type i)
+Lepjets_Event_Jet& Lepjets_Event::jet ( std::vector<Lepjets_Event_Jet>::size_type i )
 //
 // Purpose: Return the Ith jet.
 //
@@ -167,12 +168,12 @@ Lepjets_Event_Jet& Lepjets_Event::jet (std::vector<Lepjets_Event_Jet>::size_type
 //   The Ith jet.
 //
 {
-  assert (i < _jets.size());
-  return _jets[i];
+   assert ( i < _jets.size() );
+   return _jets[i];
 }
 
 
-const Lepjets_Event_Lep& Lepjets_Event::lep (std::vector<Lepjets_Event_Lep>::size_type i) const
+const Lepjets_Event_Lep& Lepjets_Event::lep ( std::vector<Lepjets_Event_Lep>::size_type i ) const
 //
 // Purpose: Return the Ith lepton.
 //
@@ -183,12 +184,12 @@ const Lepjets_Event_Lep& Lepjets_Event::lep (std::vector<Lepjets_Event_Lep>::siz
 //   The Ith lepton.
 //
 {
-  assert (i < _leps.size());
-  return _leps[i];
+   assert ( i < _leps.size() );
+   return _leps[i];
 }
 
 
-const Lepjets_Event_Jet& Lepjets_Event::jet (std::vector<Lepjets_Event_Jet>::size_type i) const
+const Lepjets_Event_Jet& Lepjets_Event::jet ( std::vector<Lepjets_Event_Jet>::size_type i ) const
 //
 // Purpose: Return the Ith jet.
 //
@@ -199,8 +200,8 @@ const Lepjets_Event_Jet& Lepjets_Event::jet (std::vector<Lepjets_Event_Jet>::siz
 //   The Ith jet.
 //
 {
-  assert (i < _jets.size());
-  return _jets[i];
+   assert ( i < _jets.size() );
+   return _jets[i];
 }
 
 
@@ -212,7 +213,7 @@ Fourvec& Lepjets_Event::met ()
 //   The missing Et.
 //
 {
-  return _met;
+   return _met;
 }
 
 
@@ -224,7 +225,7 @@ const Fourvec& Lepjets_Event::met () const
 //   The missing Et.
 //
 {
-  return _met;
+   return _met;
 }
 
 
@@ -236,7 +237,7 @@ Resolution& Lepjets_Event::kt_res ()
 //   The kt resolution.
 //
 {
-  return _kt_res;
+   return _kt_res;
 }
 
 
@@ -248,7 +249,7 @@ const Resolution& Lepjets_Event::kt_res () const
 //   The kt resolution.
 //
 {
-  return _kt_res;
+   return _kt_res;
 }
 
 
@@ -260,7 +261,7 @@ double Lepjets_Event::zvertex () const
 //   The z-vertex.
 //
 {
-  return _zvertex;
+   return _zvertex;
 }
 
 
@@ -272,7 +273,7 @@ double& Lepjets_Event::zvertex ()
 //   The z-vertex.
 //
 {
-  return _zvertex;
+   return _zvertex;
 }
 
 
@@ -284,11 +285,11 @@ bool Lepjets_Event::isMC () const
 //   The isMC flag.
 //
 {
-  return _isMC;
+   return _isMC;
 }
 
 
-void Lepjets_Event::setMC (bool isMC)
+void Lepjets_Event::setMC ( bool isMC )
 //
 // Purpose: set isMC flag.
 //
@@ -296,7 +297,7 @@ void Lepjets_Event::setMC (bool isMC)
 //   nothing
 //
 {
-  _isMC = isMC;
+   _isMC = isMC;
 }
 
 double Lepjets_Event::dlb () const
@@ -307,7 +308,7 @@ double Lepjets_Event::dlb () const
 //   The LB discriminant.
 //
 {
-  return _dlb;
+   return _dlb;
 }
 
 
@@ -319,7 +320,7 @@ double& Lepjets_Event::dlb ()
 //   The LB discriminant.
 //
 {
-  return _dlb;
+   return _dlb;
 }
 
 
@@ -331,7 +332,7 @@ double Lepjets_Event::dnn () const
 //   The NN discriminant.
 //
 {
-  return _dnn;
+   return _dnn;
 }
 
 
@@ -343,11 +344,11 @@ double& Lepjets_Event::dnn ()
 //   The NN discriminant.
 //
 {
-  return _dnn;
+   return _dnn;
 }
 
 
-Fourvec Lepjets_Event::sum (int type) const
+Fourvec Lepjets_Event::sum ( int type ) const
 //
 // Purpose: Sum all objects with type code TYPE.
 //
@@ -358,14 +359,14 @@ Fourvec Lepjets_Event::sum (int type) const
 //   The sum of all objects with type code TYPE.
 //
 {
-  Fourvec out;
-  for (std::vector<Lepjets_Event_Lep>::size_type  i=0; i < _leps.size(); i++)
-    if (_leps[i].type() == type)
-      out += _leps[i].p();
-  for (std::vector<Lepjets_Event_Jet>::size_type i=0; i < _jets.size(); i++)
-    if (_jets[i].type() == type)
-      out += _jets[i].p();
-  return out;
+   Fourvec out;
+   for ( std::vector<Lepjets_Event_Lep>::size_type  i = 0; i < _leps.size(); i++ )
+      if ( _leps[i].type() == type )
+      { out += _leps[i].p(); }
+   for ( std::vector<Lepjets_Event_Jet>::size_type i = 0; i < _jets.size(); i++ )
+      if ( _jets[i].type() == type )
+      { out += _jets[i].p(); }
+   return out;
 }
 
 
@@ -376,16 +377,16 @@ Fourvec Lepjets_Event::kt () const
 // Returns:
 //   The event kt.
 {
-  Fourvec v = _met;
-  for (std::vector<Lepjets_Event_Lep>::size_type i=0; i < _leps.size(); i++)
-    v += _leps[i].p();
-  for (std::vector<Lepjets_Event_Jet>::size_type i=0; i < _jets.size(); i++)
-    v += _jets[i].p();
-  return v;
+   Fourvec v = _met;
+   for ( std::vector<Lepjets_Event_Lep>::size_type i = 0; i < _leps.size(); i++ )
+   { v += _leps[i].p(); }
+   for ( std::vector<Lepjets_Event_Jet>::size_type i = 0; i < _jets.size(); i++ )
+   { v += _jets[i].p(); }
+   return v;
 }
 
 
-void Lepjets_Event::add_lep (const Lepjets_Event_Lep& lep)
+void Lepjets_Event::add_lep ( const Lepjets_Event_Lep& lep )
 //
 // Purpose: Add a lepton to the event.
 //
@@ -393,11 +394,11 @@ void Lepjets_Event::add_lep (const Lepjets_Event_Lep& lep)
 //   lep -         The lepton to add.
 //
 {
-  _leps.push_back (lep);
+   _leps.push_back ( lep );
 }
 
 
-void Lepjets_Event::add_jet (const Lepjets_Event_Jet& jet)
+void Lepjets_Event::add_jet ( const Lepjets_Event_Jet& jet )
 //
 // Purpose: Add a jet to the event.
 //
@@ -405,11 +406,11 @@ void Lepjets_Event::add_jet (const Lepjets_Event_Jet& jet)
 //   jet -         The jet to add.
 //
 {
-  _jets.push_back (jet);
+   _jets.push_back ( jet );
 }
 
 
-void Lepjets_Event::smear (CLHEP::HepRandomEngine& engine, bool smear_dir /*= false*/)
+void Lepjets_Event::smear ( CLHEP::HepRandomEngine& engine, bool smear_dir /*= false*/ )
 //
 // Purpose: Smear the objects in the event according to their resolutions.
 //
@@ -418,22 +419,22 @@ void Lepjets_Event::smear (CLHEP::HepRandomEngine& engine, bool smear_dir /*= fa
 //   smear_dir -   If false, smear the momentum only.
 //
 {
-  Fourvec before, after;
-  for (std::vector<Lepjets_Event_Lep>::size_type i=0; i < _leps.size(); i++) {
-    before += _leps[i].p();
-    _leps[i].smear (engine, smear_dir);
-    after += _leps[i].p();
-  }
-  for (std::vector<Lepjets_Event_Jet>::size_type i=0; i < _jets.size(); i++) {
-    before += _jets[i].p();
-    _jets[i].smear (engine, smear_dir);
-    after += _jets[i].p();
-  }
+   Fourvec before, after;
+   for ( std::vector<Lepjets_Event_Lep>::size_type i = 0; i < _leps.size(); i++ ) {
+      before += _leps[i].p();
+      _leps[i].smear ( engine, smear_dir );
+      after += _leps[i].p();
+   }
+   for ( std::vector<Lepjets_Event_Jet>::size_type i = 0; i < _jets.size(); i++ ) {
+      before += _jets[i].p();
+      _jets[i].smear ( engine, smear_dir );
+      after += _jets[i].p();
+   }
 
-  Fourvec kt = _met + before;
-  kt(Fourvec::X) = _kt_res.pick (kt(Fourvec::X), kt(Fourvec::X), engine);
-  kt(Fourvec::Y) = _kt_res.pick (kt(Fourvec::Y), kt(Fourvec::Y), engine);
-  _met = kt - after;
+   Fourvec kt = _met + before;
+   kt( Fourvec::X ) = _kt_res.pick ( kt( Fourvec::X ), kt( Fourvec::X ), engine );
+   kt( Fourvec::Y ) = _kt_res.pick ( kt( Fourvec::Y ), kt( Fourvec::Y ), engine );
+   _met = kt - after;
 }
 
 
@@ -442,8 +443,8 @@ void Lepjets_Event::sort ()
 // Purpose: Sort the objects in the event in order of descending pt.
 //
 {
-  std::stable_sort (_leps.begin(), _leps.end(), not2 (less<Lepjets_Event_Lep> ()));
-  std::stable_sort (_jets.begin(), _jets.end(), not2 (less<Lepjets_Event_Lep> ()));
+   std::stable_sort ( _leps.begin(), _leps.end(), not2 ( less<Lepjets_Event_Lep> () ) );
+   std::stable_sort ( _jets.begin(), _jets.end(), not2 ( less<Lepjets_Event_Lep> () ) );
 }
 
 
@@ -452,40 +453,41 @@ std::vector<int> Lepjets_Event::jet_types() const
 // Purpose: Return the jet types of the event
 //
 {
-  std::vector<int> ret;
-  for (std::vector<Lepjets_Event_Jet>::size_type ijet =  0 ;
-       ijet != _jets.size() ;
-       ijet++) {
-    ret.push_back(jet(ijet).type());
-  }
-  return ret;
+   std::vector<int> ret;
+   for ( std::vector<Lepjets_Event_Jet>::size_type ijet =  0 ;
+         ijet != _jets.size() ;
+         ijet++ ) {
+      ret.push_back( jet( ijet ).type() );
+   }
+   return ret;
 }
 
 
-bool Lepjets_Event::set_jet_types(const std::vector<int>& _jet_types)
+bool Lepjets_Event::set_jet_types( const std::vector<int>& _jet_types )
 //
 // Purpose: Set the jet types of the event
 // Return false if it fails, trus if it succeeds
 //
 {
-  if (_jets.size() != _jet_types.size()) {
-    return false;
-  }
-  bool saw_hadw1 = false;
-  for (std::vector<Lepjets_Event_Jet>::size_type i=0; i < njets(); i++) {
-    int t = _jet_types[i];
-    if (t == hadw1_label) {
-      if (saw_hadw1)
-        t = hadw2_label;
-      saw_hadw1 = true;
-    }
-    jet (i).type() = t;
-  }
-  return true;
+   if ( _jets.size() != _jet_types.size() ) {
+      return false;
+   }
+   bool saw_hadw1 = false;
+   for ( std::vector<Lepjets_Event_Jet>::size_type i = 0; i < njets(); i++ ) {
+      int t = _jet_types[i];
+      if ( t == hadw1_label ) {
+         if ( saw_hadw1 )
+         { t = hadw2_label; }
+         saw_hadw1 = true;
+      }
+      jet ( i ).type() = t;
+   }
+   return true;
 }
 
 
-namespace {
+namespace
+{
 
 
 struct Lepjets_Event_Cutter
@@ -493,28 +495,28 @@ struct Lepjets_Event_Cutter
 // Purpose: Helper for cutting on objects.
 //
 {
-  Lepjets_Event_Cutter (double pt_cut, double eta_cut)
-    : _pt_cut (pt_cut), _eta_cut (eta_cut)
-  {}
-  bool operator() (const Lepjets_Event_Lep& l) const;
-  double _pt_cut;
-  double _eta_cut;
+   Lepjets_Event_Cutter ( double pt_cut, double eta_cut )
+      : _pt_cut ( pt_cut ), _eta_cut ( eta_cut )
+   {}
+   bool operator() ( const Lepjets_Event_Lep& l ) const;
+   double _pt_cut;
+   double _eta_cut;
 };
 
 
-bool Lepjets_Event_Cutter::operator () (const Lepjets_Event_Lep& l) const
+bool Lepjets_Event_Cutter::operator () ( const Lepjets_Event_Lep& l ) const
 //
 // Purpose: Object cut evaluator.
 //
 {
-  return ! (l.p().perp() > _pt_cut && abs (l.p().pseudoRapidity()) < _eta_cut);
+   return ! ( l.p().perp() > _pt_cut && abs ( l.p().pseudoRapidity() ) < _eta_cut );
 }
 
 
 } // unnamed namespace
 
 
-int Lepjets_Event::cut_leps (double pt_cut, double eta_cut)
+int Lepjets_Event::cut_leps ( double pt_cut, double eta_cut )
 //
 // Purpose: Remove all leptons failing the pt and eta cuts.
 //
@@ -526,14 +528,14 @@ int Lepjets_Event::cut_leps (double pt_cut, double eta_cut)
 //   The number of leptons remaining after the cuts.
 //
 {
-  _leps.erase (remove_if (_leps.begin(), _leps.end(),
-                          Lepjets_Event_Cutter (pt_cut, eta_cut)),
-               _leps.end ());
-  return _leps.size ();
+   _leps.erase ( remove_if ( _leps.begin(), _leps.end(),
+                             Lepjets_Event_Cutter ( pt_cut, eta_cut ) ),
+                 _leps.end () );
+   return _leps.size ();
 }
 
 
-int Lepjets_Event::cut_jets (double pt_cut, double eta_cut)
+int Lepjets_Event::cut_jets ( double pt_cut, double eta_cut )
 //
 // Purpose: Remove all jets failing the pt and eta cuts.
 //
@@ -545,14 +547,14 @@ int Lepjets_Event::cut_jets (double pt_cut, double eta_cut)
 //   The number of jets remaining after the cuts.
 //
 {
-  _jets.erase (remove_if (_jets.begin(), _jets.end(),
-                          Lepjets_Event_Cutter (pt_cut, eta_cut)),
-               _jets.end ());
-  return _jets.size ();
+   _jets.erase ( remove_if ( _jets.begin(), _jets.end(),
+                             Lepjets_Event_Cutter ( pt_cut, eta_cut ) ),
+                 _jets.end () );
+   return _jets.size ();
 }
 
 
-void Lepjets_Event::trimjets (std::vector<Lepjets_Event_Jet>::size_type n)
+void Lepjets_Event::trimjets ( std::vector<Lepjets_Event_Jet>::size_type n )
 //
 // Purpose: Remove all but the first N jets.
 //
@@ -560,13 +562,13 @@ void Lepjets_Event::trimjets (std::vector<Lepjets_Event_Jet>::size_type n)
 //   n -           The number of jets to keep.
 //
 {
-  if (n >= _jets.size())
-    return;
-  _jets.erase (_jets.begin() + n, _jets.end());
+   if ( n >= _jets.size() )
+   { return; }
+   _jets.erase ( _jets.begin() + n, _jets.end() );
 }
 
 
-std::ostream& Lepjets_Event::dump (std::ostream& s, bool full /*=false*/) const
+std::ostream& Lepjets_Event::dump ( std::ostream& s, bool full /*=false*/ ) const
 //
 // Purpose: Dump out this object.
 //
@@ -578,23 +580,23 @@ std::ostream& Lepjets_Event::dump (std::ostream& s, bool full /*=false*/) const
 //   The stream S.
 //
 {
-  s << "Run: " << _runnum << "  Event: " << _evnum << "\n";
-  s << "Leptons:\n";
-  for (std::vector<Lepjets_Event_Lep>::size_type i=0; i < _leps.size(); i++) {
-    s << "  ";
-    _leps[i].dump (s, full);
-    s << "\n";
-  }
-  s << "Jets:\n";
-  for (std::vector<Lepjets_Event_Jet>::size_type i=0; i < _jets.size(); i++) {
-    s << "  ";
-    _jets[i].dump (s, full);
-    s << "\n";
-  }
-  s << "Missing Et: " << _met << "\n";
-  if (_zvertex != 0)
-    s << "z-vertex: " << _zvertex << "\n";
-  return s;
+   s << "Run: " << _runnum << "  Event: " << _evnum << "\n";
+   s << "Leptons:\n";
+   for ( std::vector<Lepjets_Event_Lep>::size_type i = 0; i < _leps.size(); i++ ) {
+      s << "  ";
+      _leps[i].dump ( s, full );
+      s << "\n";
+   }
+   s << "Jets:\n";
+   for ( std::vector<Lepjets_Event_Jet>::size_type i = 0; i < _jets.size(); i++ ) {
+      s << "  ";
+      _jets[i].dump ( s, full );
+      s << "\n";
+   }
+   s << "Missing Et: " << _met << "\n";
+   if ( _zvertex != 0 )
+   { s << "z-vertex: " << _zvertex << "\n"; }
+   return s;
 }
 
 
@@ -608,11 +610,11 @@ std::string Lepjets_Event::jet_permutation() const
 //          h - Higgs to b-bbar
 //          ? - Unknown
 {
-    std::string permutation;
-    for (size_t jet = 0 ; jet != _jets.size() ; ++jet) {
-        permutation = permutation + hitfit::jetTypeString(_jets[jet].type());
-    }
-    return permutation;
+   std::string permutation;
+   for ( size_t jet = 0 ; jet != _jets.size() ; ++jet ) {
+      permutation = permutation + hitfit::jetTypeString( _jets[jet].type() );
+   }
+   return permutation;
 }
 
 /**
@@ -623,7 +625,7 @@ std::string Lepjets_Event::jet_permutation() const
 
     @param ev The instance of Lepjets_Event to be printed.
  */
-std::ostream& operator<< (std::ostream& s, const Lepjets_Event& ev)
+std::ostream& operator<< ( std::ostream& s, const Lepjets_Event& ev )
 //
 // Purpose: Dump out this object.
 //
@@ -635,7 +637,7 @@ std::ostream& operator<< (std::ostream& s, const Lepjets_Event& ev)
 //   The stream S.
 //
 {
-  return ev.dump (s);
+   return ev.dump ( s );
 }
 
 

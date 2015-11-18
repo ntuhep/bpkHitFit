@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "MyAna/bpkHitFit/interface/HitFitTranslator.h"
-#include "MyAna/bprimeKit/interface/format.h"
+#include "bpkFrameWork/bpkHitFit/interface/HitFitTranslator.h"
+#include "bpkFrameWork/bprimeKit/interface/format.h"
 
 namespace hitfit
 {

@@ -2,10 +2,10 @@
 
 #include "TopQuarkAnalysis/TopHitFit/interface/Top_Decaykin.h"
 
-#include "MyAna/bprimeKit/interface/bpkUtils.h"
-#include "MyAna/bprimeKit/interface/format.h"
-#include "MyAna/bpkHitFit/interface/HitFitInfoBranches.h"
-#include "MyAna/bpkHitFit/interface/doHitFit.h"
+#include "bpkFrameWork/bprimeKit/interface/bpkUtils.h"
+#include "bpkFrameWork/bprimeKit/interface/format.h"
+#include "bpkFrameWork/bpkHitFit/interface/HitFitInfoBranches.h"
+#include "bpkFrameWork/bpkHitFit/interface/doHitFit.h"
 #include "TLorentzVector.h"
 
 const unsigned doHitFit::_MIN_HITFIT_JET[] = {
@@ -24,7 +24,7 @@ doHitFit::doHitFit( const edm::ParameterSet& iConfig, const EvtInfoBranches& evt
    _onlyBest( iConfig.getUntrackedParameter<bool>( "SaveOnlyBest", false ) ),
    debug_( iConfig.getUntrackedParameter<bool>( "Debug", false ) ),
    Default_( iConfig.getUntrackedParameter<edm::FileInPath>( "Default",
-             edm::FileInPath( std::string( "MyAna/bpkHitFit/data/setting/RunHitFitConfiguration.txt" ) ) ) ),
+             edm::FileInPath( std::string( "bpkFrameWork/bpkHitFit/data/setting/RunHitFitConfiguration.txt" ) ) ) ),
    ElectronResolution_( iConfig.getUntrackedParameter<edm::FileInPath>( std::string( "ElectronResolution" ),
                         edm::FileInPath( std::string( "TopQuarkAnalysis/TopHitFit/data/resolution/tqafElectronResolution.txt" ) ) ) ),
    ElectronObjRes_ ( iConfig.getUntrackedParameter<bool>( "ElectronObjRes", bool( false ) ) ),

@@ -44,7 +44,7 @@
 #define HITFIT_LEPJETS_EVENT_H
 
 
-#include "MyAna/bpkHitFit/interface/Lepjets_Event_Jet.h"
+#include "bpkFrameWork/bpkHitFit/interface/Lepjets_Event_Jet.h"
 #include "TopQuarkAnalysis/TopHitFit/interface/Lepjets_Event_Lep.h"
 #include <vector>
 #include <iosfwd>

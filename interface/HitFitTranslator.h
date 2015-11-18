@@ -3,7 +3,7 @@
 
 #include "TopQuarkAnalysis/TopHitFit/interface/EtaDepResolution.h"
 #include "TopQuarkAnalysis/TopHitFit/interface/Lepjets_Event_Lep.h"
-#include "MyAna/bpkHitFit/interface/Lepjets_Event_Jet.h"
+#include "bpkFrameWork/bpkHitFit/interface/Lepjets_Event_Jet.h"
 #include "TopQuarkAnalysis/TopHitFit/interface/fourvec.h"
 
 class LepInfoBranches;

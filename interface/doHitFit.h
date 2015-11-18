@@ -3,8 +3,8 @@
 
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
-#include "MyAna/bpkHitFit/interface/bpkRunHitFit.h"
-#include "MyAna/bpkHitFit/interface/HitFitTranslator.h"
+#include "bpkFrameWork/bpkHitFit/interface/bpkRunHitFit.h"
+#include "bpkFrameWork/bpkHitFit/interface/HitFitTranslator.h"
 
 class LepInfoBranches;
 class JetInfoBranches;

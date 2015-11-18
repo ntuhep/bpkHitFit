@@ -38,8 +38,8 @@
 
 #include "TopQuarkAnalysis/TopHitFit/interface/Fourvec_Event.h"
 #include "TopQuarkAnalysis/TopHitFit/interface/Defaults.h"
-#include "MyAna/bpkHitFit/interface/Constrained_Top.h"
-#include "MyAna/bpkHitFit/interface/Lepjets_Event.h"
+#include "bpkFrameWork/bpkHitFit/interface/Constrained_Top.h"
+#include "bpkFrameWork/bpkHitFit/interface/Lepjets_Event.h"
 #include <ostream>
 #include <cassert>
 #include <stdio.h>

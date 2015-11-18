@@ -38,8 +38,8 @@
 
  */
 
-#include "MyAna/bpkHitFit/interface/Top_Fit.h"
-#include "MyAna/bpkHitFit/interface/Lepjets_Event.h"
+#include "bpkFrameWork/bpkHitFit/interface/Top_Fit.h"
+#include "bpkFrameWork/bpkHitFit/interface/Lepjets_Event.h"
 #include "TopQuarkAnalysis/TopHitFit/interface/Top_Decaykin.h"
 #include "TopQuarkAnalysis/TopHitFit/interface/Defaults.h"
 #include "TopQuarkAnalysis/TopHitFit/interface/Fit_Results.h"

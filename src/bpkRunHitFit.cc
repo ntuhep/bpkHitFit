@@ -1,8 +1,8 @@
 #include <algorithm>
 
-#include "MyAna/bpkHitFit/interface/bpkRunHitFit.h"
+#include "bpkFrameWork/bpkHitFit/interface/bpkRunHitFit.h"
 #include "TopQuarkAnalysis/TopHitFit/interface/Defaults_Text.h"
-#include "MyAna/bprimeKit/interface/format.h"
+#include "bpkFrameWork/bprimeKit/interface/format.h"
 
 // Explanation about the MIN/MAX definitions:
 //

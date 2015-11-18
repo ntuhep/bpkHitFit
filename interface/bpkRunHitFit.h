@@ -1,9 +1,9 @@
 #ifndef BPKRUNHITFIT
 #define BPKRUNHITFIT
 
-#include "MyAna/bpkHitFit/interface/HitFitTranslator.h"
-#include "MyAna/bpkHitFit/interface/Lepjets_Event.h"
-#include "MyAna/bpkHitFit/interface/Top_Fit.h"
+#include "bpkFrameWork/bpkHitFit/interface/HitFitTranslator.h"
+#include "bpkFrameWork/bpkHitFit/interface/Lepjets_Event.h"
+#include "bpkFrameWork/bpkHitFit/interface/Top_Fit.h"
 
 #include "TopQuarkAnalysis/TopHitFit/interface/Fit_Result.h"
 

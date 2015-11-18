@@ -2,7 +2,7 @@ import FWCore.ParameterSet.Config as cms
 
 defaultHitFitParameters = cms.PSet(
     Debug              = cms.untracked.bool(False),
-    Default            = cms.untracked.FileInPath("MyAna/bpkHitFit/data/setting/RunHitFitConfiguration.txt"),
+    Default            = cms.untracked.FileInPath("bpkFrameWork/bpkHitFit/data/setting/RunHitFitConfiguration.txt"),
     ElectronResolution = cms.untracked.FileInPath("TopQuarkAnalysis/TopHitFit/data/resolution/tqafElectronResolution.txt"),
     ElectronObjRes     = cms.untracked.bool(False),
     MuonResolution     = cms.untracked.FileInPath("TopQuarkAnalysis/TopHitFit/data/resolution/tqafMuonResolution.txt"),

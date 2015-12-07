@@ -1,6 +1,7 @@
 <use   name="clhep"/>
 <use   name="ROOT"/>
 <use   name="TopQuarkAnalysis/TopHitFit"/>
+<use   name="bpkFrameWork/ModifiedHitFit"/>
 <export>
   <lib   name="1"/>
 </export>

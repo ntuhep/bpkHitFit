@@ -2,8 +2,8 @@
 #define BPKRUNHITFIT
 
 #include "bpkFrameWork/bpkHitFit/interface/HitFitTranslator.h"
-#include "bpkFrameWork/bpkHitFit/interface/Lepjets_Event.h"
-#include "bpkFrameWork/bpkHitFit/interface/Top_Fit.h"
+#include "bpkFrameWork/ModifiedHitFit/interface/Lepjets_Event.h"
+#include "bpkFrameWork/ModifiedHitFit/interface/Top_Fit.h"
 
 #include "TopQuarkAnalysis/TopHitFit/interface/Fit_Result.h"
 
